@@ -4,8 +4,6 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;   // Less redudancy of code.
-
 /*
  * Functions rather marvelous to remove the necessity of repeating so many times the same words in the same way.
  *  void print_iris( string )         -> Will print to the stderr in the order of the given strings.
@@ -13,17 +11,17 @@ using namespace std;   // Less redudancy of code.
  * I don't think there's a way to minimize this anymore, so for now, it is what it is.
  */
 
-void print_iris( string our_string )
+void print_iris( std::string our_string )
 {
 
-  cout << "[iris] " << our_string << endl;
+  std::cout << "[iris] " << our_string << std::endl;
 
 }
 
-void print_iris( string first_string, string second_string )
+void print_iris( std::string first_string, std::string second_string )
 {
 
-  cout << "[iris] " << first_string << " " << "\"" << second_string << "\"" << endl;
+  std::cout << "[iris] " << first_string << " " << "\"" << second_string << "\"" << std::endl;
 
 }
 
@@ -37,7 +35,7 @@ void print_iris( string first_string, string second_string )
 class InputParser
 {
   private:
-    vector <string> tokens;
+    std::vector <std::string> tokens;
 
   public:
 
@@ -47,7 +45,7 @@ class InputParser
       // Loop through each argument and add it to the tokens private variable.
       for ( int i = 1; i < argc; ++i )
       {
-        this->tokens.push_back( string(argv[i]) );
+        this->tokens.push_back( std::string(argv[i]) );
       }
     }
 
@@ -55,9 +53,9 @@ class InputParser
     // It doesn't matter how you call it, but for both strings it will verify and take the next argument.
     // It will actually remove from the leftovers both the strings even if it just took the first one.
     // Original author is @iain, though it is modified for our needs.
-    const string get( const string & short_name, const string & long_name )
+    const std::string get( const std::string & short_name, const std::string & long_name )
     {
-      vector <string>::const_iterator itr;
+      std::vector <std::string>::const_iterator itr;
 
       // Less redudancy of code.
       #define GET_STRING(A)		\
@@ -66,26 +64,26 @@ class InputParser
           if ( itr != this->tokens.end() && ++itr != this->tokens.end() )
 
       GET_STRING(short_name) {
-        const string parameter = *--itr;
+        const std::string parameter = *--itr;
         remove(this->tokens.begin(), this->tokens.end(), parameter);
         remove(this->tokens.begin(), this->tokens.end(), long_name); // Remove the next string as well.
         return parameter;
       }
 
       GET_STRING(long_name) {
-        const string parameter = *--itr;
+        const std::string parameter = *--itr;
         remove(this->tokens.begin(), this->tokens.end(), parameter);
         return parameter;
       }
 
       // Return nothing if it doesn't find.
-      static const string empty_string("");
+      static const std::string empty_string("");
       return empty_string;
     }
 
     // This will return the rest of our arguments after all the calls are made, such as this->get or this->exist.
     // Use this will great knowledge about what you're doing.
-    inline vector <string> left () const
+    inline std::vector <std::string> left () const
     {
 
       return tokens;
@@ -95,7 +93,7 @@ class InputParser
     // To return true if an option was passed to the arguments. It will remove from this->tokens the strings it finds.
     // short_name : -a
     // long_name  : --animal
-    bool exists( const string & short_name, const string & long_name )
+    bool exists( const std::string & short_name, const std::string & long_name )
     {
 
       // Less redudancy of code.
@@ -125,14 +123,14 @@ class SourcePage
 {
 
   private:
-    string response;
-    string language;
+    std::string response;
+    std::string language;
     char * query;
     CURL * curl;
 
   public:
 
-    SourcePage ( string lang, string & text )
+    SourcePage ( std::string lang, std::string & text )
     {
 
       language = lang;
@@ -171,24 +169,24 @@ class SourcePage
       curl_global_cleanup();
     }
 
-    bool render( string sources )
+    bool render( std::string sources )
     {
 
       // The sources' string-option are split by ",". We may modify this latter for better syntax, but for now, it does what it is supposed to do.
-      const string delimiter = ","; 
+      const std::string delimiter = ","; 
 
       // Loop through each source to download
       size_t pos = 0;
-      while ( (pos = sources.find(delimiter)) != string::npos ) {
+      while ( (pos = sources.find(delimiter)) != std::string::npos ) {
 
         // Current source on the loop
-        const string source = sources.substr(0, pos);
+        const std::string source = sources.substr(0, pos);
         sources.erase(0, pos + delimiter.length());
 
         // Run download to get our little page :)
-        cout << this->download(source) << endl;
+        std::cout << this->download(source) << std::endl;
 
-      }; cout << this->download(sources) << endl;
+      }; std::cout << this->download(sources) << std::endl;
 
       // If it doesn't find anything.
       return false;
@@ -198,7 +196,7 @@ class SourcePage
     // Use cURL to get the source code based on the type of source (std::string), such as "Google" or "Wikipedia".
     // This will return a std::string. If it doesn't find a source that matches one of the list, then it will return nothing.
     // So don't be dumb and send a source here to that doesn't exist at all.
-    const string & download( string source )
+    const std::string & download( std::string source )
     {
 
       // To use if no source is found in the following list.
@@ -235,7 +233,7 @@ class SourcePage
     }
 
     // The function to write the source code form cURL. It will just be used in one place.
-    static size_t write( void* ptr, size_t size, size_t nmemb, string* data )
+    static size_t write( void* ptr, size_t size, size_t nmemb, std::string* data )
     {
  
       data->append( (char*)ptr, size * nmemb );
@@ -244,21 +242,21 @@ class SourcePage
     }
 };
  
-string trim_arguments( string & s, const vector <string> left ) {
+std::string trim_arguments( std::string & s, const std::vector <std::string> left ) {
 
   // Add all the arguments from the vector into a string.
-  for (string word : left)
+  for (std::string word : left)
   {
     s += " " + word;
   }
 
   // Find trailing characters from the left side and remove them.
   size_t start = s.find_first_not_of(" \n\r\t\f\v");
-  s =  (start == string::npos) ? "" : s.substr(start);
+  s =  (start == std::string::npos) ? "" : s.substr(start);
 
   // Find trailing characters from the right side and remove them.
   size_t end = s.find_last_not_of(" \n\r\t\f\v");
-  s = (end == string::npos) ? "" : s.substr(0, end + 1);
+  s = (end == std::string::npos) ? "" : s.substr(0, end + 1);
 
   return s;
 

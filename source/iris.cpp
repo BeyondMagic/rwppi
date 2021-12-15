@@ -9,11 +9,11 @@ int main( const int argc, char** argv )
 {
 
   // Default language parameter for search set by environment variable LANG.
-  const string language = getenv("LANG") ? string( getenv("LANG") ).substr(0, 5) : "en_US";
+  const std::string language = getenv("LANG") ? std::string( getenv("LANG") ).substr(0, 5) : "en_US";
 
-  string sources; // Can be modified by options to be "Google".
-  string page;    // Source page.
-  string query;   // The query which the user sends as argument.
+  std::string sources; // Can be modified by options to be "Google".
+  std::string page;    // Source page.
+  std::string query;   // The query which the user sends as argument.
 
   bool local   = true;  // If we'll just ignore all local functions and work remotelly. 
   bool remote  = true;  // If we'll just ignore all local functions.

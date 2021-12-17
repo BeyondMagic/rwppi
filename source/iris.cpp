@@ -45,7 +45,7 @@ int main( const int argc, char** argv )
     }
 
     // Log everything we set.
-    {
+    if (log) {
       print_iris("Setting defaults...");
       print_iris("Language set:",  language);
       print_iris("Sources set:",   sources);
@@ -57,6 +57,12 @@ int main( const int argc, char** argv )
   {
 
     query = trim_arguments( query, arguments.left() );
+
+    if (query.empty())
+    {
+      print_iris("Haha, your query is so small! I can't even see it!");
+      exit(1);
+    }
 
     if (log) print_iris("Your query is exactly:", query);
 

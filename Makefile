@@ -8,9 +8,9 @@ all: build clean
 
 #-DCURL_STATICLIB
 build:
-	g++ -g -c source/iris.cpp -o iris.o
+	g++ -std=c++20 -g -c source/iris.cpp -o iris.o
 	cc -g -c source/libraries/tinyexpr/tinyexpr.c -o source/libraries/tinyexpr/tinyexpr.o
-	g++ iris.o source/libraries/tinyexpr/tinyexpr.o -lcurl -o ./bin/iris
+	g++ -std=c++20 iris.o source/libraries/tinyexpr/tinyexpr.o -lcurl -o ./bin/iris
 
 run: build
 	./bin/iris

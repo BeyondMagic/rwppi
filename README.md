@@ -36,4 +36,4 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) and #1.
 
 ---
 
-<p align="center"><a href="">APACHE 2.0 LICENSE<a></p>
+<p align="center"><a href="https://github.com/iris-cli/iris/blob/master/LICENSE">APACHE 2.0 LICENSE<a></p>

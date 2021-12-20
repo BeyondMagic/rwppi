@@ -9,3 +9,5 @@
 + + If there is "lyrics" on it, then run only on a subset of websites.
 + + If there is "calculate" on it, then run only the math methods.
 @ Joke Classe about input
++ CACHE handling and AI prototype;
++ + Save information locally / server so that queries are send to this file first to see if it can find something

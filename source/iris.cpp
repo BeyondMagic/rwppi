@@ -29,11 +29,11 @@ int main( const int argc, char** argv )
     // -a
     // --animal
     {
-      if ( arguments.exists("-h", "--help") ) return print_help();
-      if ( arguments.exists("-l", "--log") )       log      = true;
-      if ( arguments.exists("-R", "--no-remote") ) remote   = false;
-      if ( arguments.exists("-L", "--no-local") )  local    = false;
-      if ( arguments.exists("--", "--LITERAL") )   literal  = false;
+      if ( arguments.exists("-h", "--help"      )) return print_help();
+      if ( arguments.exists("-l", "--log"       )) log      = true;
+      if ( arguments.exists("-R", "--no-remote" )) remote   = false;
+      if ( arguments.exists("-L", "--no-local"  )) local    = false;
+      if ( arguments.exists("--", "--LITERAL"   )) literal  = false;
     }
 
     // Options that accept arguments:
@@ -66,11 +66,11 @@ int main( const int argc, char** argv )
 
     if (log) print_iris("Your query is exactly:", query);
 
-    SourcePage source(language, query);
+    //SourcePage source(language, query);
 
-    source.render(sources);
+    //source.render(sources);
 
-    source.clean();
+    //source.clean();
 
 
   }

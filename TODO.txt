@@ -1,4 +1,4 @@
-+ C++20 reflow...
++ C++20 reflow.
 + -abcdef support arguments
 + -t any argument after this is considered part of the query so that options are not parsed
 + methods.cpp: support multiple arguments like [ "-h", "--help" ] to verify if it exists/get

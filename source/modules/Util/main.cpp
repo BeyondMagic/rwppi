@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 João F. BeyondMagic <koetemagie@gmail.com>
+ * Copyright 2021-2022 João F. BeyondMagic <koetemagie@gmail.com>
  *
  *Licensed under the Apache License, Version 2.0 (the "License");
  *you may not use this file except in compliance with the License.
@@ -14,18 +14,8 @@
  *limitations under the License.
  */
 
-#include <iostream>
+#include "main.hpp"
 
-/*
- * Functions rather marvelous to remove the necessity of repeating so many times the same words in the same way.
- *  void print_iris( ... )         -> Will print to the stderr in the order of the given strings.
- * I don't think there's a way to minimize this anymore, so for now, it is what it is.
- */
-
-/*
- * Print the help list of Iris; should always be updated in case of major changes.
- * <void> -> 0
- */
 const unsigned int
 print_help( void )
 {

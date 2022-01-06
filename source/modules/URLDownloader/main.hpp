@@ -5,6 +5,8 @@
  * Finnally, this class will be the way to download our page and return its source code so that we can send it to the parser.
  * This is using cURL currently, though I don't see a better future ahead if it is not this minimal library that can be compiled
  * in almost every system out there. Be happy with the ugliness it provides because of its benefits, it is fast!
+ *
+ * TODO: verify if there's "%d{2}" with regex to see if it is already encoded.
  */
 class SourcePage
 {

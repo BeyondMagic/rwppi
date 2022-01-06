@@ -18,10 +18,12 @@
  * Libraries are included in the following files and so is expectable for the language server
  * to recognize support for certain standards libraries classes and functions.
  *
- * TODO: When there's full support from GCC and a language server for modules, modularize:
+ * TODO: When there's full support from GCC and a language server for modules, modularize the following files:
  */
-#include "modules/ArgumentParser/arguments.cpp"
-#include "modules/Util/util.cpp"
+
+#include "modules/ArgumentParser/main.hpp"
+#include "modules/Util/main.hpp"
+#include "modules/AssistantFun/main.hpp"
 
 /*
  * Iris is a CLI-assistant that receives any type of input and tries to find an answer for it.
@@ -47,70 +49,89 @@ int main( const int argc, char** argv )
   // List of sources, which are divided by comma. Default is "Google", e.j: "Google,Wikipedia".
   std::string sources;
 
-  // cURL will not encode the query if set to true. If false, e.j: " " will become "%20".
-  bool literal = false;
-
   // Log everything it is doing.
   bool log     = true;
 
   // To what unit Iris will operate on, by setting this it will be used to log.
   // Default is 7 (all without log).
-  unsigned int unitlog = {};
+  unsigned int unit_log = 7;
+
+  // For fun when throwing exceptions.
+  AITricks tricks;
 
   /*
    * UNIT 0: Parse options and parameters.
    *
-   * Parse options and parameters.
+   * Modules: ArgumentParser, Util, AITricks.
    */
-  try {
+  {
+    try {
 
-    InputParser arguments(argc, argv);
+      // Initialize the method we use to parse our options.
+      InputParser arguments(argc, argv);
 
-    if ( arguments.exists( "-h", "--help" )) return print_help();
-    if ( arguments.exists( "--", "--" )) literal  = true;
+      // If there is those strings on the argument list.
+      {
+        if ( arguments.exists( "-h", "--help" )) return print_help();
+      }
 
-    sources = arguments.get( "-s", "--source" );
-    unitlog = stoi( arguments.get( "-u", "--unit"   ) );
+      // To get the value after the strings on the argument list
+      {
+                    sources      = arguments.get( "-s", "--source" );
+        std::string unit_handler = arguments.get( "-u", "--unit" );
 
-    if ( sources.empty() ) sources = "Google";
+        // In case the unit option was parsed transform into a number.
+        if ( !unit_handler.empty() ) unit_log = stoi( unit_handler );
 
-    query = arguments.left();
+        // Default values
+        if ( sources.empty() ) sources = "Google";
+        if ( unit_log > 6 || unit_log < 0) throw "[0] EE: The unit option must be betweeen 0-6.";
+      }
 
-    if (log) {
-      std::cout << "[0] Setting defaults..." << "\n";
-      std::cout << "[0] Unit set: " << unitlog << "\n";
-      std::cout << "[0] Language set: " << language << "\n";
-      std::cout << "[0] Sources set: "  << sources << "\n";
-      std::cout << "[0] Literal set (1 for true]: "  << literal << "\n";
-      std::cout << "[0] Your query is exactly: " << query << "\n";
+      // Return what is left from the argument list after the parsing.
+      query = arguments.left();
+
+      // Log everything this unit found.
+      if (log) {
+        std::cout << "[0] Setting defaults..." << "\n";
+        std::cout << "[0] Unit set: " << unit_log << "\n";
+        std::cout << "[0] Language set: " << language << "\n";
+        std::cout << "[0] Sources set: "  << sources << "\n";
+        std::cout << "[0] Your query is exactly: " << query << "\n";
+      }
+
+      /*
+       * Excpetions/errors that happen and will force the program to exit.
+       */
+      if ( query.empty() ) throw 0;
+
     }
 
-    /*
-     * Meta
-     */
-    if ( query.empty() ) // return AITricks.emtpy();
+    // To out of range numbers:
+    catch ( const char * & a )
     {
-      std::cout << "Haha, your query is so small! I can't even see it!" << "\n";
-      // std::cout << AITricks.empty() << std::endl;
-      exit(1);
+      std::cerr << a << std::endl;
+      return 1;
+    }
+
+    // To defined exceptions with numbers to be used along AITricks.
+    catch ( const int & a )
+    {
+      std::cerr << tricks.nothing() << std::endl;
+      return 1;
+    }
+
+    // In case stoi throws an invalid_argument error.
+    // Make explicit use of stoi and throws the rest to C++ handles it...
+    catch ( const std::invalid_argument & ia )
+    {
+      std::cerr << "[0] EE: You must use the unit option along a number." << std::endl;
+      return 1;
     }
 
   }
-  catch (const std::invalid_argument& ia) {
-    std::cerr << "[0] EE: You must use the unit option along a number.\n" << ia.what() << std::endl;
-    return 1;
-  }
-/*  catch (const unsigned int a) {
-    switch (a) {
-
-      case 0: std::cerr << "[0] EE: Unit is too big."; break;
-      default: std::cerr << "[0] EE: No idea."; break;
-
-    }
-    std::cerr << std::endl;
-    return 1;
-  }*/
 
   // UNIT 1:
+  //if (unit <= 
 
 };

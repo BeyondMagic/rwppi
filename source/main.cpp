@@ -53,6 +53,9 @@ int main( const int argc, char** argv )
   // Log everything it is doing.
   bool log = false;
 
+  // In case we want to skip local methods.
+  bool skip_unit_two = false;
+
   // To what unit Iris will operate on, by setting this it will be used to log.
   // Default is 3 (all without log).
   unsigned int unit = 3;
@@ -83,7 +86,11 @@ int main( const int argc, char** argv )
         std::string sources_handler = arguments.get( "-s", "--source" );
         std::string unit_handler    = arguments.get( "-u", "--unit" );
 
-        if ( !sources_handler.empty() ) sources = sources_handler;
+        if ( !sources_handler.empty() )
+        {
+          sources = sources_handler;
+          skip_unit_two = true;
+        }
         if ( !unit_handler.empty() )
         {
           unit = stoi( unit_handler );
@@ -98,7 +105,7 @@ int main( const int argc, char** argv )
 
       // Log everything this unit found.
       if (log) {
-        std::cout << "[1] Logging settled defaults..."     << "\n";
+        std::cout << "[1] Logging settled defaults..."         << "\n";
         std::cout << "[1] Unit set: "              << unit     << "\n";
         std::cout << "[1] Language set: "          << language << "\n";
         std::cout << "[1] Sources set: "           << sources  << "\n";
@@ -112,14 +119,14 @@ int main( const int argc, char** argv )
 
     }
 
-    // To out of range numbers:
+    // To out of range unit numbers:
     catch ( const char * & a )
     {
       std::cerr << a << std::endl;
       return 1;
     }
 
-    // To defined exceptions with numbers to be used along AITricks.
+    // If there query is empty.
     catch ( const int & a )
     {
       std::cerr << tricks.nothing() << std::endl;
@@ -136,8 +143,10 @@ int main( const int argc, char** argv )
 
   }
 
-  // UNIT 2:
-  if (unit >= 2) {
+  /*
+   * UNIT 2: Run the local methods for simple computation tasks such as mathematical ones.
+   */
+  if (unit >= 2 && !skip_unit_two) {
 
     std::cout << "[2] LOL" << std::endl;
 

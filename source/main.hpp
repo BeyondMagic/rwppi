@@ -31,7 +31,7 @@ DESCRIPTION:
   It strives to have a simple codebase while being extremely performant and lightweight.
 
 USAGE:
-  iris [--help] [--unit 0-6] [--source sources]
+  iris [--help] [--unit 1-3] [--source sources] [--sources] [--methods]
 
   --help | -h
     Print out this and immediately exit the program.
@@ -42,8 +42,15 @@ USAGE:
 
   --source source1,source2,... | -s source1,source2,...
     Read respectively each source and tries to find and answer on it. If it doesn't recognize by
-    name, it will ignore and try to look at the next one. For the first answer it finds, it will
-    stop.
+    name, it will stop and warn that the user did not make a valid input.
+
+    The default one is set to Google as it is the best offering answers with their AI.
+
+  --sources | -S
+    List the sources that Iris currently can read from.
+
+  --methods | -M
+    List the methods, both locally and remotely, that will be used for the sources.
 
 MAINTAINER: (s):
   2021-2021 João F. BeyondMagic <koetemagie@gmail.com>
@@ -58,8 +65,7 @@ CONTRIBUTE:
   https://github.com/iris-cli/iris/blob/master/CONTRIBUTING.md
 
 LICENSE:
-  APACHE 2.0
-)" << std::endl;
+  APACHE 2.0)" << std::endl;
 
   return 0;
 
@@ -74,10 +80,13 @@ print_sources ( void )
 {
 
   std::cout << R"(Sources can be any of the following:
-  Google      -> https://www.google.com/
+  Google      -> https://www.google.com/ -> Default source.
   LetrasMusBr -> https://www.letras.mus.br/
 
-)" << std::endl;
+Planned to add:
+  Google Images -> https://images.google.com/
+
+  )" << std::endl;
 
   return 0;
 }
@@ -118,9 +127,7 @@ since it will scrape in a asynchronous manner for performance.
     InformationTable   -> the office
 
   LetrasMusBr -> https://www.letras.mus.br/
-    Lyrics
-
-)" << std::endl;
+    Lyrics)" << std::endl;
 
   return 0;
 }

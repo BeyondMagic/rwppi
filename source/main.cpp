@@ -48,14 +48,14 @@ int main( const int argc, char** argv )
   std::string query;
 
   // List of sources, which are divided by comma. Default is "Google", e.j: "Google,Wikipedia".
-  std::string sources;
+  std::string sources = "Google";
 
   // Log everything it is doing.
-  bool log = true;
+  bool log = false;
 
   // To what unit Iris will operate on, by setting this it will be used to log.
-  // Default is 4 (all without log).
-  unsigned int unit = 4;
+  // Default is 3 (all without log).
+  unsigned int unit = 3;
 
   // For fun when throwing exceptions.
   AITricks tricks;
@@ -80,15 +80,17 @@ int main( const int argc, char** argv )
 
       // To get the value after the strings on the argument list
       {
-        sources                  = arguments.get( "-s", "--source" );
-        std::string unit_handler = arguments.get( "-u", "--unit" );
+        std::string sources_handler = arguments.get( "-s", "--source" );
+        std::string unit_handler    = arguments.get( "-u", "--unit" );
 
-        // In case the unit option was parsed transform into a number.
-        if ( !unit_handler.empty() ) unit = stoi( unit_handler );
+        if ( !sources_handler.empty() ) sources = sources_handler;
+        if ( !unit_handler.empty() )
+        {
+          unit = stoi( unit_handler );
+          log  = true;
+        }
 
-        // Default values
-        if ( sources.empty() ) sources = "Google";
-        if ( unit > 4 || unit < 0) throw "[0] EE: The unit option must be betweeen 0-6.";
+        if ( unit < 1 || unit > 3 ) throw "[1] EE: The unit option must be betweeen 1-3.";
       }
 
       // Return what is left from the argument list after the parsing.
@@ -96,11 +98,11 @@ int main( const int argc, char** argv )
 
       // Log everything this unit found.
       if (log) {
-        std::cout << "[0] Setting defaults..."     << "\n";
-        std::cout << "[0] Unit set: "              << unit     << "\n";
-        std::cout << "[0] Language set: "          << language << "\n";
-        std::cout << "[0] Sources set: "           << sources  << "\n";
-        std::cout << "[0] Your query is exactly: " << query    << "\n";
+        std::cout << "[1] Logging settled defaults..."     << "\n";
+        std::cout << "[1] Unit set: "              << unit     << "\n";
+        std::cout << "[1] Language set: "          << language << "\n";
+        std::cout << "[1] Sources set: "           << sources  << "\n";
+        std::cout << "[1] Your query is exactly: " << query    << "\n";
       }
 
       /*
@@ -128,19 +130,24 @@ int main( const int argc, char** argv )
     // Make explicit use of stoi and throws the rest to C++ handles it...
     catch ( const std::invalid_argument & ia )
     {
-      std::cerr << "[0] EE: You must use the unit option along a number." << std::endl;
+      std::cerr << "[1] EE: You must use the unit option along a number." << std::endl;
       return 1;
     }
 
   }
 
-  // UNIT 1:
-  if (unit >= 1) {
+  // UNIT 2:
+  if (unit >= 2) {
 
-    std::cout << "LOL" << std::endl;
+    std::cout << "[2] LOL" << std::endl;
 
   }
 
-  //
+  // UNIT 3:
+  if (unit >= 3) {
+
+    std::cout << "[3] HAH" << std::endl;
+
+  }
 
 };

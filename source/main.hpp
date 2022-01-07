@@ -73,11 +73,8 @@ const unsigned int
 print_sources ( void )
 {
 
-  std::cout << R"(iris - Version: 0.0.1
-
-Sources can be any of the following:
+  std::cout << R"(Sources can be any of the following:
   Google      -> https://www.google.com/
-  Wikipedia   -> https://??.wikipedia.org/ (Supported languages by Wikipedia)
   LetrasMusBr -> https://www.letras.mus.br/
 
 )" << std::endl;
@@ -93,32 +90,35 @@ const unsigned int
 print_methods ( void )
 {
 
-  std::cout << R"(iris - Version: 0.0.1
+  std::cout << R"(Local will always run unless source is specified.
 
-Sources can be any of the following:
-Google
-  Math               -> log(26) + 7/3
-  Definition         -> meaning of love
-  Lyrics             -> K.Flay - Maybe There's A Way lyrics
-  Translation        -> palavra fazer em português para japonês
-  Weather            -> current weather
-  Tracklist          -> noisia outer edges tracklist
-  InformationList    -> social network cast
-  HeaderList         -> Need for Speed Heat cars list
-  Chemistry          -> density of hydrogen
-  Pronunciation      -> pronounce linux
-  UnitConversion     -> 1m into 1cm
-  CurrencyConversion -> 1 USD in rupee
-  InformationHeader  -> christmas day
-  InformationWindow  -> who is garfield
-  QuotesList         -> mahatma gandhi quotes
-  TableSport         -> Chelsea next game
-  InformationTable   -> the office
+  Local:
+    MathExpression     -> 4+6/3+27+sqrt(25)
 
-Wikipedia
+All remote methods will run by source specification, emphasis on all
+since it will scrape in a asynchronous manner for performance.
 
-LetrasMusBr -> https://www.letras.mus.br/
-  Lyrics
+  Google:
+    Math               -> log(26) + 7/3
+    Definition         -> meaning of love
+    Lyrics             -> K.Flay - Maybe There's A Way lyrics
+    Translation        -> palavra fazer em português para japonês
+    Weather            -> current weather
+    Tracklist          -> noisia outer edges tracklist
+    InformationList    -> social network cast
+    HeaderList         -> Need for Speed Heat cars list
+    Chemistry          -> density of hydrogen
+    Pronunciation      -> pronounce linux
+    UnitConversion     -> 1m into 1cm
+    CurrencyConversion -> 1 USD in rupee
+    InformationHeader  -> christmas day
+    InformationWindow  -> who is garfield
+    QuotesList         -> mahatma gandhi quotes
+    TableSport         -> Chelsea next game
+    InformationTable   -> the office
+
+  LetrasMusBr -> https://www.letras.mus.br/
+    Lyrics
 
 )" << std::endl;
 

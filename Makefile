@@ -31,9 +31,10 @@ build:
 
 modules:
 	mkdir -p bin
-	gcc -c source/modules/tinyexpr/main.c         -o bin/tinyexpr.o
 	g++ -c source/modules/ArgumentParser/main.cpp -o bin/arguments.o
 	g++ -c source/modules/AssistantFun/main.cpp   -o bin/tricks.o
+	gcc -c source/modules/Methods/tinyexpr/main.c -o bin/tinyexpr.o
+	g++ -c source/modules/Methods/main.cpp        -o bin/methods.o
 
 #-----------------c++20-------------------------
 

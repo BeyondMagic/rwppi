@@ -22,8 +22,9 @@
  */
 
 #include "modules/ArgumentParser/main.hpp"
-#include "modules/Util/main.hpp"
 #include "modules/AssistantFun/main.hpp"
+
+#include "main.hpp"
 
 /*
  * Iris is a CLI-assistant that receives any type of input and tries to find an answer for it.
@@ -50,11 +51,11 @@ int main( const int argc, char** argv )
   std::string sources;
 
   // Log everything it is doing.
-  bool log     = true;
+  bool log = true;
 
   // To what unit Iris will operate on, by setting this it will be used to log.
-  // Default is 7 (all without log).
-  unsigned int unit_log = 7;
+  // Default is 4 (all without log).
+  unsigned int unit = 4;
 
   // For fun when throwing exceptions.
   AITricks tricks;
@@ -72,20 +73,22 @@ int main( const int argc, char** argv )
 
       // If there is those strings on the argument list.
       {
-        if ( arguments.exists( "-h", "--help" )) return print_help();
+        if ( arguments.exists( "-h", "--help"    )) return print_help();
+        if ( arguments.exists( "-S", "--sources" )) return print_sources();
+        if ( arguments.exists( "-M", "--methods" )) return print_methods();
       }
 
       // To get the value after the strings on the argument list
       {
-                    sources      = arguments.get( "-s", "--source" );
+        sources                  = arguments.get( "-s", "--source" );
         std::string unit_handler = arguments.get( "-u", "--unit" );
 
         // In case the unit option was parsed transform into a number.
-        if ( !unit_handler.empty() ) unit_log = stoi( unit_handler );
+        if ( !unit_handler.empty() ) unit = stoi( unit_handler );
 
         // Default values
         if ( sources.empty() ) sources = "Google";
-        if ( unit_log > 6 || unit_log < 0) throw "[0] EE: The unit option must be betweeen 0-6.";
+        if ( unit > 4 || unit < 0) throw "[0] EE: The unit option must be betweeen 0-6.";
       }
 
       // Return what is left from the argument list after the parsing.
@@ -93,11 +96,11 @@ int main( const int argc, char** argv )
 
       // Log everything this unit found.
       if (log) {
-        std::cout << "[0] Setting defaults..." << "\n";
-        std::cout << "[0] Unit set: " << unit_log << "\n";
-        std::cout << "[0] Language set: " << language << "\n";
-        std::cout << "[0] Sources set: "  << sources << "\n";
-        std::cout << "[0] Your query is exactly: " << query << "\n";
+        std::cout << "[0] Setting defaults..."     << "\n";
+        std::cout << "[0] Unit set: "              << unit     << "\n";
+        std::cout << "[0] Language set: "          << language << "\n";
+        std::cout << "[0] Sources set: "           << sources  << "\n";
+        std::cout << "[0] Your query is exactly: " << query    << "\n";
       }
 
       /*
@@ -132,6 +135,12 @@ int main( const int argc, char** argv )
   }
 
   // UNIT 1:
-  //if (unit <= 
+  if (unit >= 1) {
+
+    std::cout << "LOL" << std::endl;
+
+  }
+
+  //
 
 };

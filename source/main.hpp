@@ -24,7 +24,7 @@
  *
  */
 
-#define PRINT_RESPONSE(METHOD,RESPONSE) (std::cout << METHOD << " " << RESPONSE << "\n")
+#define PRINT_RESPONSE(RESPONSE,METHOD) (std::cout << METHOD << " " << RESPONSE << "\n")
 
 /*
  * Print the help list of Iris; should always be updated in case of major changes.

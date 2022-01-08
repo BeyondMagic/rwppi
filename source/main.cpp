@@ -55,7 +55,11 @@ int main( const int argc, char** argv )
   bool log = false;
 
   // In case we want to skip local methods.
-  bool skip_unit_two = false;
+  bool unit_two = true;
+
+  // In case the user defines methods to call upon.
+  bool defined_methods = false;
+  std::string methods = "All";
 
   // To what unit Iris will operate on, by setting this it will be used to log.
   // Default is 3 (all without log).
@@ -86,12 +90,18 @@ int main( const int argc, char** argv )
       // To get the value after the strings on the argument list
       {
         std::string sources_handler = arguments.get( "-s", "--source" );
+        std::string methods_handler = arguments.get( "-m", "--method" );
         std::string unit_handler    = arguments.get( "-u", "--unit"   );
 
         if ( !sources_handler.empty() )
         {
           sources = sources_handler;
-          skip_unit_two = true;
+          unit_two = false;
+        }
+        if ( !methods_handler.empty() )
+        {
+          methods = methods_handler;
+          defined_methods = true;
         }
         if ( !unit_handler.empty() )
         {
@@ -113,6 +123,7 @@ int main( const int argc, char** argv )
         std::cout << "[1] Language set: "          << language << "\n";
         std::cout << "[1] Log set: "               << "true"   << "\n";
         std::cout << "[1] Sources set: "           << sources  << "\n";
+        std::cout << "[1] Method set: "            << methods  << "\n";
         std::cout << "[1] Your query is exactly: " << query    << "\n";
       }
 
@@ -148,32 +159,76 @@ int main( const int argc, char** argv )
   }
 
   /*
-   * UNIT 2: Run the local methods for simple computation tasks such as mathematical ones.
+   * In case the user defines methods to use as listed by "--methods" and defined by "--method".
    */
-  if (unit >= 2 && !skip_unit_two) {
+  if (!defined_methods)
+  {
 
-    Local local;
+    /*
+     * UNIT 2: Run the local methods for simple computation tasks such as mathematical ones.
+     */
+    if (unit >= 2 && unit_two) {
 
-    // Local methods call-in.
-    std::future<double> math_expression = std::async(std::launch::async, &Local::math, &local, query);
+      Local local;
 
-    // Local methods call-out.
-    const double math = math_expression.get();
+      // Local methods call-in.
+      std::future<double> math_expression = std::async(std::launch::async, &Local::math, &local, query);
 
-    // Response handling to output.
-    {
-      if (!std::isnan(math)) PRINT_RESPONSE(math, "LocalMath");
+      // Local methods call-out.
+      const double math = math_expression.get();
+
+      // Response handling to output.
+      {
+        if (!std::isnan(math)) PRINT_RESPONSE(math, "LocalMath");
+      }
+
     }
 
+    /*
+     * UNIT 3: Run the remote methods, those are scrapers and will downloads.
+     *
+     */
+    if (unit >= 3) {
+
+       std::cout << "[3] HAH" << std::endl;
+
+    }
   }
 
   /*
-   * UNIT 3:
+   * UNIT 4:
+   *
+   * The only way to call this unit is when define methods.
    *
    */
-  if (unit >= 3) {
+  else if (unit == 3)
+  {
 
-     std::cout << "[3] HAH" << std::endl;
+    std::cout << "[4] Special unit." << std::endl;
+
+    // Loop through each method
+    // method_string
+    // {
+    //    method_hash = unique_number_from_string(method_string)
+    //
+    //    switch (method_hash)
+    //    {
+    //      case LOCAL_MATH:
+    //        Local local;
+    //        break;
+    //
+    //      case GOOGLE_MATH:
+    //        Remote remote;
+    //
+    //        break;
+    //
+    //      // Don't accept unknown methods.
+    //      default:
+    //        std::cerr << "[4] EE: The method '" << method_string <<' hashed '" << method_hash << "' is unknown." << std::endl;
+    //        
+    //        return 1;
+    //    }
+    // }
 
   }
 

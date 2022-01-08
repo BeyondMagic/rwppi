@@ -14,13 +14,12 @@
  *limitations under the License.
  */
 
-#include "tinyexpr/main.h" // To evaluate locally math expressions.
 #include "main.hpp"
 
 const double
-Local::math( const char * & expression ) const
+Local::math( const std::string & expression )
 {
 
-  return te_interp(expression, 0);
+  return te_interp(expression.c_str(), 0);
 
 }

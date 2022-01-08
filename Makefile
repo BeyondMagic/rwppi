@@ -27,7 +27,7 @@ uninstall:
 
 build:
 	g++ -c source/main.cpp -o bin/iris.o
-	g++ bin/*.o -o bin/iris
+	g++ -lpthread bin/*.o -o bin/iris
 
 modules:
 	mkdir -p bin

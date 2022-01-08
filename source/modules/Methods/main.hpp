@@ -14,21 +14,20 @@
  *limitations under the License.
  */
 
+#include <string>
+#include "tinyexpr/main.h"
+
 /*
  * Anything that can be computed locally needs to be put in here, all of those functions will run not matter the query.
  * So be careful with the speed of it.
  */
-class Local
+struct Local
 {
 
-  public:
-
-    Local () {};
-
-    /* Return the value of an expression, it will returns the first value it encounters.
-     * It will simply return NaN for invalid expressions.
-     */
-    const double
-    math( const char * & ) const;
+  /* Return the value of an expression, it will returns the first value it encounters.
+   * It will simply return NaN for invalid expressions.
+   */
+  const double
+  math( const std::string & );
 
 };

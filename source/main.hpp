@@ -15,6 +15,16 @@
  */
 
 #include <iostream>
+#include <future>
+#include <cmath>
+
+#define NaN (0.0/0.0)
+
+/*
+ *
+ */
+
+#define PRINT_RESPONSE(METHOD,RESPONSE) (std::cout << METHOD << " " << RESPONSE << "\n")
 
 /*
  * Print the help list of Iris; should always be updated in case of major changes.
@@ -36,15 +46,28 @@ USAGE:
   --help | -h
     Print out this and immediately exit the program.
 
-  --unit | -u
-    Print out all logging information of an unit, this is preferably for debugging to
-    contributors of the program.
+  --unit 3 | -u 3
+    Goes to only a certain unit of the program, those are available:
+
+      1 = Reading settings and query. Sets logging true.
+      2 = Evaluate local methods.
+      3 = Evaluate remote methods.
+
+  --log | -l
+    Activates logging for debugging and information for developers.
 
   --source source1,source2,... | -s source1,source2,...
     Read respectively each source and tries to find and answer on it. If it doesn't recognize by
     name, it will stop and warn that the user did not make a valid input.
 
     The default one is set to Google as it is the best offering answers with their AI.
+
+  --method method1,method2,... | -m method1,method2,...
+    Read respectively each method and tries to find an answer for it. If it doesn't recognize by
+    name, it will stop and warn the tuser did not make a valid input.
+
+  --local
+    
 
   --sources | -S
     List the sources that Iris currently can read from.
@@ -102,13 +125,13 @@ print_methods ( void )
   std::cout << R"(Local will always run unless source is specified.
 
   Local:
-    MathExpression     -> 4+6/3+27+sqrt(25)
+    LocalMath          -> 4+6/3+27+sqrt(25)
 
 All remote methods will run by source specification, emphasis on all
 since it will scrape in a asynchronous manner for performance.
 
   Google:
-    Math               -> log(26) + 7/3
+    MathGoogle         -> log(26) + 7/3
     Definition         -> meaning of love
     Lyrics             -> K.Flay - Maybe There's A Way lyrics
     Translation        -> palavra fazer em português para japonês
@@ -131,4 +154,5 @@ since it will scrape in a asynchronous manner for performance.
 
   return 0;
 }
+
 

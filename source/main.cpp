@@ -23,6 +23,7 @@
 
 #include "modules/ArgumentParser/main.hpp"
 #include "modules/AssistantFun/main.hpp"
+#include "modules/Methods/main.hpp"
 
 #include "main.hpp"
 
@@ -45,7 +46,7 @@ int main( const int argc, char** argv )
     : "en_US";
 
   // Query is what you're sending to Iris to as a question, it will be used on all UNITS.
-  std::string query;
+  std::string query = {};
 
   // List of sources, which are divided by comma. Default is "Google", e.j: "Google,Wikipedia".
   std::string sources = "Google";
@@ -103,6 +104,8 @@ int main( const int argc, char** argv )
       // Return what is left from the argument list after the parsing.
       query = arguments.left();
 
+      query = query.c_str();
+
       // Log everything this unit found.
       if (log) {
         std::cout << "[1] Logging settled defaults..."         << "\n";
@@ -148,15 +151,27 @@ int main( const int argc, char** argv )
    */
   if (unit >= 2 && !skip_unit_two) {
 
-    std::cout << "[2] LOL" << std::endl;
+    Local local;
+
+    // Local methods call-in.
+    std::future<double> math_expression = std::async(std::launch::async, &Local::math, &local, query);
+
+    // Local methods call-out.
+    const double math = math_expression.get();
+
+    // Response handling to output.
+    if (!std::isnan(math)) PRINT_RESPONSE(math, "LocalMath");
 
   }
 
-  // UNIT 3:
-  if (unit >= 3) {
+  /*
+   * UNIT 3:
+   *
+   */
+  // if (unit >= 3) {
 
-    std::cout << "[3] HAH" << std::endl;
+  //   std::cout << "[3] HAH" << std::endl;
 
-  }
+  // }
 
 };

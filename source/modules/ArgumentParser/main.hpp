@@ -18,6 +18,15 @@
 #include <vector>
 #include <string>
 
+#define EXIST_STRING(A) ( find( this->tokens.begin(), this->tokens.end(), A ) != this->tokens.end() )
+
+#define GET_STRING(A)		\
+    itr = find( this -> tokens.begin(), this -> tokens.end(), A );		\
+    remove(this->tokens.begin(), this->tokens.end(), A);		\
+    if ( itr != this->tokens.end() && ++itr != this->tokens.end() )
+
+#define REMOVE_STRING(A) (this->tokens.erase(std::remove(this->tokens.begin(), this->tokens.end(), A), this->tokens.end()))
+
 /*
  * This is basically our library-free code to parse our arguments, it is obviously not feature full for the same purporse
  * we created this. Basically, we use it so that we don't have to compile a 1MiB header file to just parse our options.

@@ -25,17 +25,10 @@ InputParser::InputParser (const int argc, char ** argv )
   }
 }
 
-#define REMOVE_STRING(A) (this->tokens.erase(std::remove(this->tokens.begin(), this->tokens.end(), A), this->tokens.end()))
-
 const std::string
 InputParser::get( const std::string & short_name, const std::string & long_name )
 {
   std::vector <std::string>::const_iterator itr;
-
-  #define GET_STRING(A)		\
-      itr = find( this -> tokens.begin(), this -> tokens.end(), A );		\
-      remove(this->tokens.begin(), this->tokens.end(), A);		\
-      if ( itr != this->tokens.end() && ++itr != this->tokens.end() )
 
   GET_STRING(short_name)
   {
@@ -83,8 +76,6 @@ InputParser::left ( void ) const {
 bool
 InputParser::exists( const std::string & short_name, const std::string & long_name )
 {
-
-  #define EXIST_STRING(A) ( find( this->tokens.begin(), this->tokens.end(), A ) != this->tokens.end() )
 
   // Loop through the options and see if exists either short_name or long_name option.
   if ( EXIST_STRING(short_name) )

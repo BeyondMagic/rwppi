@@ -16,13 +16,16 @@
 
 #include "main.hpp"
 
-InputParser::InputParser (const int argc, char ** argv ) {
+InputParser::InputParser (const int argc, char ** argv )
+{
   // Loop through each argument and add it to the tokens private variable.
   for ( int i = 1; i < argc; ++i )
   {
     this->tokens.push_back( std::string(argv[i]) );
   }
 }
+
+#define REMOVE_STRING(A) (this->tokens.erase(std::remove(this->tokens.begin(), this->tokens.end(), A), this->tokens.end()))
 
 const std::string
 InputParser::get( const std::string & short_name, const std::string & long_name )
@@ -34,17 +37,20 @@ InputParser::get( const std::string & short_name, const std::string & long_name 
       remove(this->tokens.begin(), this->tokens.end(), A);		\
       if ( itr != this->tokens.end() && ++itr != this->tokens.end() )
 
-  GET_STRING(short_name) {
+  GET_STRING(short_name)
+  {
     const std::string parameter = *--itr;
-    remove(this->tokens.begin(), this->tokens.end(), parameter);
-    remove(this->tokens.begin(), this->tokens.end(), long_name);
+    REMOVE_STRING(parameter);
     return parameter;
   }
-
-  GET_STRING(long_name) {
-    const std::string parameter = *--itr;
-    remove(this->tokens.begin(), this->tokens.end(), parameter);
-    return parameter;
+  else
+  {
+    GET_STRING(long_name)
+    {
+      const std::string parameter = *--itr;
+      REMOVE_STRING(parameter);
+      return parameter;
+    }
   }
 
   // Return nothing if it doesn't find.
@@ -77,18 +83,20 @@ InputParser::left ( void ) const {
 bool
 InputParser::exists( const std::string & short_name, const std::string & long_name )
 {
- 
+
   #define EXIST_STRING(A) ( find( this->tokens.begin(), this->tokens.end(), A ) != this->tokens.end() )
 
-  // Loop through each option to see if it exists there.
-  if ( EXIST_STRING(short_name) || EXIST_STRING(long_name) ) {
-
-    remove(this->tokens.begin(), this->tokens.end(), short_name);
-    remove(this->tokens.begin(), this->tokens.end(), long_name);
-
+  // Loop through the options and see if exists either short_name or long_name option.
+  if ( EXIST_STRING(short_name) )
+  {
+    REMOVE_STRING(short_name);
     return true;
-
-  };
+  }
+  else if ( EXIST_STRING(long_name) )
+  {
+    REMOVE_STRING(long_name);
+    return true;
+  }
 
   return false;
 

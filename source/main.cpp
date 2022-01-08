@@ -80,12 +80,13 @@ int main( const int argc, char** argv )
         if ( arguments.exists( "-h", "--help"    )) return print_help();
         if ( arguments.exists( "-S", "--sources" )) return print_sources();
         if ( arguments.exists( "-M", "--methods" )) return print_methods();
+        if ( arguments.exists( "-l", "--log"     )) log = true;
       }
 
       // To get the value after the strings on the argument list
       {
         std::string sources_handler = arguments.get( "-s", "--source" );
-        std::string unit_handler    = arguments.get( "-u", "--unit" );
+        std::string unit_handler    = arguments.get( "-u", "--unit"   );
 
         if ( !sources_handler.empty() )
         {
@@ -95,7 +96,7 @@ int main( const int argc, char** argv )
         if ( !unit_handler.empty() )
         {
           unit = stoi( unit_handler );
-          log  = true;
+          if (unit == 1) log = true;
         }
 
         if ( unit < 1 || unit > 3 ) throw "[1] EE: The unit option must be betweeen 1-3.";
@@ -104,13 +105,13 @@ int main( const int argc, char** argv )
       // Return what is left from the argument list after the parsing.
       query = arguments.left();
 
-      query = query.c_str();
-
       // Log everything this unit found.
-      if (log) {
+      if (log)
+      {
         std::cout << "[1] Logging settled defaults..."         << "\n";
         std::cout << "[1] Unit set: "              << unit     << "\n";
         std::cout << "[1] Language set: "          << language << "\n";
+        std::cout << "[1] Log set: "               << "true"   << "\n";
         std::cout << "[1] Sources set: "           << sources  << "\n";
         std::cout << "[1] Your query is exactly: " << query    << "\n";
       }
@@ -160,7 +161,9 @@ int main( const int argc, char** argv )
     const double math = math_expression.get();
 
     // Response handling to output.
-    if (!std::isnan(math)) PRINT_RESPONSE(math, "LocalMath");
+    {
+      if (!std::isnan(math)) PRINT_RESPONSE(math, "LocalMath");
+    }
 
   }
 
@@ -168,10 +171,10 @@ int main( const int argc, char** argv )
    * UNIT 3:
    *
    */
-  // if (unit >= 3) {
+  if (unit >= 3) {
 
-  //   std::cout << "[3] HAH" << std::endl;
+     std::cout << "[3] HAH" << std::endl;
 
-  // }
+  }
 
 };

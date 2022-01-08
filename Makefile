@@ -26,8 +26,8 @@ uninstall:
 	rm -f ${DESTDIR}/bin/iris
 
 build:
-	g++ -c source/main.cpp -o bin/iris.o
-	g++ -lpthread bin/*.o -o bin/iris
+	g++ -c source/main.cpp 												-o bin/iris.o
+	g++ -lpthread bin/*.o 												-o bin/iris
 
 modules:
 	mkdir -p bin

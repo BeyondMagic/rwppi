@@ -66,9 +66,6 @@ USAGE:
     Read respectively each method and tries to find an answer for it. If it doesn't recognize by
     name, it will stop and warn the tuser did not make a valid input.
 
-  --local
-    
-
   --sources | -S
     List the sources that Iris currently can read from.
 
@@ -131,7 +128,7 @@ All remote methods will run by source specification, emphasis on all
 since it will scrape in a asynchronous manner for performance.
 
   Google:
-    MathGoogle         -> log(26) + 7/3
+    MathGoogle         -> log_2(26) + 7/3
     Definition         -> meaning of love
     Lyrics             -> K.Flay - Maybe There's A Way lyrics
     Translation        -> palavra fazer em português para japonês
@@ -154,5 +151,3 @@ since it will scrape in a asynchronous manner for performance.
 
   return 0;
 }
-
-

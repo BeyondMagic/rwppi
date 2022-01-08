@@ -171,6 +171,8 @@ int main( const int argc, char** argv )
 
       Local local;
 
+      bool response_found = false;
+
       // Local methods call-in.
       std::future<double> math_expression = std::async(std::launch::async, &Local::math, &local, query);
 
@@ -179,8 +181,13 @@ int main( const int argc, char** argv )
 
       // Response handling to output.
       {
-        if (!std::isnan(math)) PRINT_RESPONSE(math, "LocalMath");
+        if (!std::isnan(math))
+        {
+          RESPONSE(math, "LocalMath");
+        }
       }
+
+      if (response_found) exit(0);
 
     }
 
@@ -188,7 +195,7 @@ int main( const int argc, char** argv )
      * UNIT 3: Run the remote methods, those are scrapers and will downloads.
      *
      */
-    if (unit >= 3) {
+    if (unit == 3) {
 
        std::cout << "[3] HAH" << std::endl;
 
@@ -204,7 +211,7 @@ int main( const int argc, char** argv )
   else if (unit == 3)
   {
 
-    std::cout << "[4] Special unit." << std::endl;
+    if (log) std::cout << "[4] Special unit." << std::endl;
 
     // Loop through each method
     // method_string
@@ -231,5 +238,7 @@ int main( const int argc, char** argv )
     // }
 
   }
+
+  return 1;
 
 };

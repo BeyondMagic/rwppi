@@ -24,7 +24,9 @@
  *
  */
 
-#define PRINT_RESPONSE(RESPONSE,METHOD) (std::cout << METHOD << " " << RESPONSE << "\n")
+#define RESPONSE(RESPONSE,METHOD) \
+  std::cout << METHOD << " " << RESPONSE << "\n"; \
+    response_found = true;
 
 /*
  * Print the help list of Iris; should always be updated in case of major changes.

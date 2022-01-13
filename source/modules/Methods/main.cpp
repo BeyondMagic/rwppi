@@ -16,10 +16,75 @@
 
 #include "main.hpp"
 
-const double
-Local::math( const std::string & expression )
+bool response_found = false;
+
+/*
+ * Local
+ */
+
+void
+MethodLocal::math( const std::string & expression )
 {
 
-  return te_interp(expression.c_str(), 0);
+  const double answer = te_interp(expression.c_str(), 0);
+
+  if (!std::isnan(answer))
+  {
+    RESPONSE(answer, "LocalMath");
+  }
+
+}
+
+const bool
+MethodLocal::all( const std::string & expression )
+{
+
+  // Local methods call-in.
+  auto math_handler = std::async(&MethodLocal::math, this, expression);
+
+  // Local methods call-out.
+  math_handler.get();
+
+  return response_found;
+
+}
+
+/*
+ * Remote.
+ */
+
+void
+MethodRemote::google_lyrics( const std::string & page )
+{
+
+  RESPONSE("found a nice lyrics response", "GoogleLyrics");
+
+}
+
+void
+MethodRemote::google_math( const std::string & page )
+{
+
+  RESPONSE("found a nice math response", "GoogleMath");
+
+}
+
+/*
+ * Compiled.
+ */
+
+const bool
+MethodRemote::google( const std::string & page )
+{
+
+  // Local methods call-in.
+  auto math_handler   = std::async(&MethodRemote::google_math,   this, page);
+  auto lyrics_handler = std::async(&MethodRemote::google_lyrics, this, page);
+
+  // Local methods call-out.
+  math_handler.get();
+  lyrics_handler.get();
+
+  return response_found;
 
 }

@@ -15,19 +15,77 @@
  */
 
 #include <string>
+#include <iostream>
+#include <future>
+#include <cmath>
+#include <fstream>
+#include <sstream>
 #include "tinyexpr/main.h"
+
+#define RESPONSE(RESPONSE,METHOD) \
+  std::cout << METHOD << " " << RESPONSE << "\n"; \
+    response_found = true;
 
 /*
  * Anything that can be computed locally needs to be put in here, all of those functions will run not matter the query.
  * So be careful with the speed of it.
  */
-struct Local
+struct MethodLocal
 {
 
   /* Return the value of an expression, it will returns the first value it encounters.
    * It will simply return NaN for invalid expressions.
    */
-  const double
+  void
   math( const std::string & );
+
+  /* Run all functions initialised above.
+   */
+  const bool
+  all( const std::string & );
+
+};
+
+/*
+ * Scrapers for a web-page.
+ */
+struct MethodRemote
+{
+
+  /*
+   * Follow the order of Util::print_methods as listed in there.
+   */
+
+  void
+  google_math( const std::string & );
+
+  void
+  google_definition( const std::string & );
+
+  /* Return the value of an expression using the Google engine. */
+  void
+  google_lyrics( const std::string & );
+
+  void
+  google_translation( const std::string & );
+
+  // Weather            -> current weather
+  // Tracklist          -> noisia outer edges tracklist
+  // InformationList    -> social network cast
+  // HeaderList         -> Need for Speed Heat cars list
+  // Chemistry          -> density of hydrogen
+  // Pronunciation      -> pronounce linux
+  // UnitConversion     -> 1m into 1cm
+  // CurrencyConversion -> 1 USD in rupee
+  // InformationHeader  -> christmas day
+  // InformationWindow  -> who is garfield
+  // QuotesList         -> mahatma gandhi quotes
+  // TableSport         -> Chelsea next game
+  // InformationTable   -> the office
+
+  /* Compiled methods for certain pages.
+   */
+  const bool
+  google( const std::string & );
 
 };

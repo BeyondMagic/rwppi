@@ -27,7 +27,7 @@ uninstall:
 
 build:
 	g++ -c source/main.cpp 												-o bin/iris.o
-	g++ -lpthread bin/*.o 												-o bin/iris
+	g++ -lpthread bin/*.o 												-o bin/iris    -lcurl
 
 modules:
 	mkdir -p bin
@@ -35,6 +35,7 @@ modules:
 	g++ -c source/modules/AssistantFun/main.cpp   -o bin/tricks.o
 	gcc -c source/modules/Methods/tinyexpr/main.c -o bin/tinyexpr.o
 	g++ -c source/modules/Methods/main.cpp        -o bin/methods.o
+	g++ -c source/modules/URLDownloader/main.cpp  -o bin/urldownloader.o
 
 #-----------------c++20-------------------------
 

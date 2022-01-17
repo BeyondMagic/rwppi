@@ -26,16 +26,13 @@ uninstall:
 	rm -f ${DESTDIR}/bin/iris
 
 build:
-	g++ -c source/main.cpp 												-o bin/iris.o
-	g++ -lpthread bin/*.o 												-o bin/iris    -lcurl
+	g++ -c source/main.cpp     -o bin/iris.o
+	g++    bin/*.o             -o bin/iris       -lcurl -O3 -lpthread
+# -llexbor-html
 
 modules:
 	mkdir -p bin
-	g++ -c source/modules/ArgumentParser/main.cpp -o bin/arguments.o
-	g++ -c source/modules/AssistantFun/main.cpp   -o bin/tricks.o
-	gcc -c source/modules/Methods/tinyexpr/main.c -o bin/tinyexpr.o
-	g++ -c source/modules/Methods/main.cpp        -o bin/methods.o
-	g++ -c source/modules/URLDownloader/main.cpp  -o bin/urldownloader.o
+	gcc -c source/modules/tinyexpr/main.c        -o bin/tinyexpr.o
 
 #-----------------c++20-------------------------
 

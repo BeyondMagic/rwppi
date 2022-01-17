@@ -23,11 +23,6 @@
 
 #include "main.hpp"
 
-#include "modules/AssistantFun/main.hpp"
-#include "modules/ArgumentParser/main.hpp"
-#include "modules/URLDownloader/main.hpp"
-#include "modules/Methods/main.hpp"
-
 /*
  * Iris is a CLI-assistant that receives any type of input and tries to find an answer for it.
  * It strives to have a simple and highly documented codebase while being extremely performant and lightweight.
@@ -59,7 +54,6 @@ int main( const int argc, char** argv )
   bool unit_two = true;
 
   // In case the user defines methods to call upon.
-  bool defined_methods = false;
   std::string methods = "All";
 
   // To what unit Iris will operate on, by setting this it will be used to log.
@@ -105,15 +99,14 @@ int main( const int argc, char** argv )
         if ( !methods_handler.empty() )
         {
           methods = methods_handler;
-          defined_methods = true;
+          unit = 4;
         }
         if ( !unit_handler.empty() )
         {
           unit = stoi( unit_handler );
           if (unit == 1) log = true;
+          else if ( unit < 1 || unit > 3 ) throw "[1] EE: The unit option must be betweeen 1-3.";
         }
-
-        if ( unit < 1 || unit > 3 ) throw "[1] EE: The unit option must be betweeen 1-3.";
       }
 
       // Return what is left from the argument list after the parsing.
@@ -122,10 +115,10 @@ int main( const int argc, char** argv )
       // Log everything this unit found.
       if (log)
       {
-        std::cout << "[1] Logging settled defaults..."         << "\n";
+        std::cout << "[1] Logging settled defaults... "             << "\n";
         std::cout << "[1] Unit set:                   " << unit     << "\n";
         std::cout << "[1] Language set:               " << language << "\n";
-        std::cout << "[1] Log set:                    " << "true"   << "\n";
+        std::cout << "[1] Log set:                    " << log      << "\n";
         std::cout << "[1] Sources set:                " << sources  << "\n";
         std::cout << "[1] Method set:                 " << methods  << "\n";
         std::cout << "[1] Your query is exactly:      " << query    << "\n";
@@ -163,9 +156,9 @@ int main( const int argc, char** argv )
   }
 
   /*
-   * In case the user defines methods to use as listed by "--methods" and defined by "--method".
+   * In case the user does not define methods to use as listed by "--methods" and defined by "--method".
    */
-  if (!defined_methods)
+  if (unit != 4)
   {
 
     /*
@@ -198,7 +191,7 @@ int main( const int argc, char** argv )
 
         // //std::string page = downloader.download(name);
         // // TEMP: Will be soon removed. 4>
-        std::ifstream t("LeonardCohen.html");
+        std::ifstream t("HTML/LeonardCohen.html");
         std::stringstream buffer;
         buffer << t.rdbuf();
         std::string page = buffer.str();
@@ -222,8 +215,7 @@ int main( const int argc, char** argv )
    * The only way to call this unit is when define methods.
    *
    */
-  else if (unit == 3)
-  {
+  else {
 
     if (log) std::cout << "[4] Special unit." << std::endl;
 

@@ -30,6 +30,7 @@ See [CONTRIBUTING.md](/CONTRIBUTING.md) and #1.
 # Acknowledgements:
 
 + [tinyexpr](https://github.com/codeplea/tinyexpr/) -- Minimal expression evaluation engine as library.
++ [lexbor](https://github.com/lexbor/lexbor) -- Fast and powerful way to parse HTML.
 + [cURL](https://curl.se/) -- Minimal way to download a source page as library.
 + [tuxi](https://github.com/Bugswriter/tuxi/) -- Inspired by.
 + [oi](https://github.com/PureArtistry/oi/) -- As motivation to create a better assistant!

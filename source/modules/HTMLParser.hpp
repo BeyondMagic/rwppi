@@ -14,19 +14,19 @@
  *limitations under the License.
  */
 
-#include "main.hpp"
+#include <string>
+#include <lexbor/html/parser.h>
+#include <lexbor/dom/interfaces/element.h>
 
-AITricks::AITricks ( void ) {}
+/*
+ * This is a simple wrapper around lexbor to only simplify main code.
+ */
+class HTMLParser {
 
-const std::string
-AITricks::math ( void )
-{
-  return "No, that's not how you put a mathematical expression onto Internet!";
-}
+  private:
+    std::string page;
 
-const std::string
-AITricks::nothing ( void )
-{
-  return "Haha, your query is so small! I can't even see it!";
-  // What do you want me to do? Create information from out of thin electrons for you?"
-}
+  public:
+
+
+};

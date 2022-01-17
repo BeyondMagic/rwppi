@@ -14,11 +14,12 @@
  *limitations under the License.
  */
 
-#include <iostream>
-#include <vector>
+#include "modules/ArgumentsParser.hpp"
+#include "modules/AssistantFun.hpp"
+#include "modules/Methods.hpp"
+#include "modules/URLDownloader.hpp"
 
 struct Util {
-
 
   /*
    * Take a string listed delimited by "," and transforms into a vector string.

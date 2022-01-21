@@ -189,12 +189,13 @@ int main( const int argc, char** argv )
 
         bool found = false;
 
-        // //std::string page = downloader.download(name);
-        // // TEMP: Will be soon removed. 4>
-        std::ifstream t("HTML/LeonardCohen.html");
-        std::stringstream buffer;
-        buffer << t.rdbuf();
-        std::string page = buffer.str();
+        std::string page = downloader.download(name);
+        //std::string page = downloader.download(name);
+        // TEMP: Will be soon removed. 4>
+        //std::ifstream t("HTML/kflay.html");
+        //std::stringstream buffer;
+        //buffer << t.rdbuf();
+        //std::string page = buffer.str();
 
         MethodRemote remote(page);
 

@@ -20,6 +20,8 @@
 #include <cmath>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <regex>
 
 #include "tinyexpr/main.h"
 
@@ -31,38 +33,54 @@
 
 bool response_found = false;
 
-#define RESPONSE(RESPONSE, METHOD, TYPE)                           \
-  {                                                                \
-    std::cout << TYPE << " " << METHOD << " " << RESPONSE << "\n"; \
-    response_found = true;                                         \
+/*
+ * Inneficient way to do this.
+ *
+ * Could be replaced, yet to see a response from https://github.com/lexbor/lexbor/issues/151.
+ */
+
+#define PRINT_ML(name) \
+  lxb_status_t                                                                    \
+  _##name (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx) \
+  {                                                                               \
+    const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);           \
+    std::string page = (const char *) data;                                       \
+    page = std::regex_replace(page, std::regex("\n"), "\n" + std::string(#name) + " "); \
+    if (!page.empty()){                                                           \
+      std::cout << #name << " " << page << "\n";                                  \
+      response_found = true;                                                      \
+    }                                                                             \
+    return LXB_STATUS_OK;                                                         \
   }
+
+#define PRINT_OL(name)                                                            \
+  lxb_status_t                                                                    \
+  _##name (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx) \
+  {                                                                               \
+    const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);           \
+    std::string page = (const char *) data;                                       \
+    if (!page.empty()){                                                           \
+      std::cout << #name << " " << page << "\n";                                  \
+      response_found = true;                                                      \
+    }                                                                             \
+    return LXB_STATUS_OK;                                                         \
+  }
+
+#define FIND(name)                                                                              \
+  lxb_css_parser_t *copy_parser = lxb_css_parser_create();                                      \
+  lxb_css_parser_init(copy_parser, NULL, NULL);                                                 \
+  lxb_selectors_t *copy_selectors = lxb_selectors_create();                                     \
+  lxb_selectors_init(copy_selectors);                                                           \
+  lxb_dom_node_t *copy_body = lxb_dom_interface_node(lxb_html_document_body_element(document)); \
+  lxb_css_selector_list_t *list = lxb_css_selectors_parse(copy_parser, s, sizeof(s) - 1);       \
+  lxb_status_t status = lxb_selectors_find(copy_selectors, copy_body, list, _##name , NULL);    \
+  lxb_css_selector_list_destroy_memory(list);
 
 #define FAILURE(MESSAGE)                                           \
   {                                                                \
     std::cerr << MESSAGE << std::endl;                             \
     exit(1);                                                       \
   }
-
-//#define GET_SELECTOR(SELECTOR)                                     \
-//  lxb_dom_elements_by_attr(this->body, this->collection,           \
-//                           (const lxb_char_t *) "id", 2,           \
-//                           (const lxb_char_t *) ID, LENGTH,        \
-//                           true);                                  \
-
-lxb_status_t
-//std::string
-print(lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx)
-{
-  const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
-
-  std::string page = (const char *) data;
-
-  if (!page.empty()) RESPONSE(page, "Lyrics", "Google");
-
-  //return page;
-  return LXB_STATUS_OK;
-}
-
 
 /*
  * Anything that can be computed locally needs to be put in here, all of those functions will run not matter the query.
@@ -93,7 +111,6 @@ class MethodRemote
 {
 
   private:
-    lxb_status_t status;
     lxb_dom_node_t *body;
     lxb_html_document_t *document;
     lxb_css_parser_t *parser;
@@ -101,14 +118,9 @@ class MethodRemote
 
   public:
 
-    /* Initialise lexbor. */
-    MethodRemote( const std::string );
+    //
 
-    /* Release resources. */
-    void
-    clean( void );
-
-    /*
+     /*
      * Follow the order of Util::print_methods as listed in there.
      */
 
@@ -116,11 +128,13 @@ class MethodRemote
     google_math();
 
     void
-    google_definition();
-
-    /* Return the value of an expression using the Google engine. */
-    void
     google_lyrics();
+
+    void
+    google_lyricsinfo();
+
+    void
+    google_definition();
 
     void
     google_translation();
@@ -138,6 +152,13 @@ class MethodRemote
     // QuotesList         -> mahatma gandhi quotes
     // TableSport         -> Chelsea next game
     // InformationTable   -> the office
+
+    /* Initialise lexbor. */
+    MethodRemote( const std::string &);
+
+    /* Release resources. */
+    void
+    clean( void );
 
     /*
      * Compiled methods for certain pages.
@@ -157,7 +178,7 @@ MethodLocal::math( const std::string & expression )
 
   const double answer = te_interp(expression.c_str(), 0);
 
-  if (!std::isnan(answer)) RESPONSE(answer, "Math", "Local");
+  if (!std::isnan(answer)) std::cout << answer << " Math " << " Local ";
 
 }
 
@@ -194,8 +215,10 @@ MethodLocal::all( const std::string & expression )
  *
  */
 
-MethodRemote::MethodRemote( const std::string page )
+MethodRemote::MethodRemote( const std::string & page )
 {
+
+  lxb_status_t status;
 
   document = lxb_html_document_create();
   if (document   == NULL          ) FAILURE("[Methods] Failed to create HTML Document");
@@ -241,27 +264,29 @@ MethodRemote::clean( void )
  *
  */
 
-void
-MethodRemote::google_lyrics()
+/*
+ *
+ *
+ * Google.
+ *
+ *  
+ */
+
+PRINT_ML(GoogleLyrics) // TODO: PRINT_ML
+void MethodRemote::google_lyrics()
 {
 
-  static const lxb_char_t selector[] = ".hwc > .BNeawe.tAd8D.AP7Wnd > div > .BNeawe.tAd8D.AP7Wnd";
-  lxb_css_selector_list_t *list;
-
-  list = lxb_css_selectors_parse(parser, selector, sizeof(selector) - 1);
-  //if (parser->status != LXB_STATUS_OK) FAILURE("[Methods] ");
-
-  status = lxb_selectors_find(selectors, body, list, print, NULL);
-  //if (status != LXB_STATUS_OK) FAILURE("[Methods] ");
-
-  /* Destroy all Selector List memory. */
-  lxb_css_selector_list_destroy_memory(list);
+  static const lxb_char_t s[] = ".hwc > .BNeawe.tAd8D.AP7Wnd > div > .BNeawe.tAd8D.AP7Wnd";
+  FIND(GoogleLyrics)
 
 }
 
-void
-MethodRemote::google_math()
+PRINT_OL(GoogleMath)
+void MethodRemote::google_math()
 {
+
+  static const lxb_char_t s[] = "#cwos";
+  FIND(GoogleMath)
 
 }
 
@@ -286,13 +311,18 @@ MethodRemote::google( )
 {
 
   // Local methods call-in.
-  //auto math_handler   = std::async(&MethodRemote::google_math,   this);
+  auto math_handler   = std::async(&MethodRemote::google_math,   this);
   auto lyrics_handler = std::async(&MethodRemote::google_lyrics, this);
+  //auto lyricsinfo_handler = std::async(&MethodRemote::google_lyricsinfo, this);
 
   // Local methods call-out.
-  //math_handler.get();
+  math_handler.get();
   lyrics_handler.get();
+  //lyricsinfo_handler.get();
 
   return response_found;
 
 }
+
+#undef PRINT
+#undef RESPONSE

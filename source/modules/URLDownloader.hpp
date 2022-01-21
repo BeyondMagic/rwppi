@@ -53,7 +53,7 @@ class URLDownloader
     // Use cURL to get the source code based on the type of source (std::string), such as "Google" or "Wikipedia".
     // This will return a std::string. If it doesn't find a source that matches one of the list, then it will return nothing.
     // So don't be dumb and send a source here to that doesn't exist at all.
-    const std::string & download( std::string & );
+    const std::string download( std::string );
 
     // Destroy the cURL method, after this the method will become unusable.
     void clean( void ) const;
@@ -131,13 +131,11 @@ URLDownloader::getURL ( std::string & name ) const
 
 }
 
-const std::string &
-URLDownloader::download( std::string & source )
+const std::string
+URLDownloader::download( std::string source )
 {
 
   source = this->getURL(source);
-
-  std::cout << "[URLDownloader] URL to download: " << source << "\n";
 
   // Set up the URL
   curl_easy_setopt( curl, CURLOPT_URL, source.c_str() );

@@ -78,6 +78,9 @@ struct Util {
         2 = Evaluate local methods.
         3 = Evaluate remote methods.
 
+    --json | -j
+      JSONify the output. Useful to feed other programs.
+
     --log | -l
       Activates logging for debugging and information for developers.
 
@@ -98,7 +101,7 @@ struct Util {
       List the methods, both locally and remotely, that will be used for the sources.
 
   MAINTAINER: (s):
-    2021-2021 João F. BeyondMagic <koetemagie@gmail.com>
+    2021-2022 João F. BeyondMagic <koetemagie@gmail.com>
 
   SOURCE-CODE:
     https://github.com/iris-cli/iris
@@ -154,6 +157,7 @@ struct Util {
       GoogleMath               -> log_2(26) + 7/3
       GoogleDefinition         -> meaning of love
       GoogleLyrics             -> K.Flay - Maybe There's A Way lyrics
+      GoogleLyricsInformation  -> K.Flay - Maybe There's A Way lyrics
       GoogleTranslation        -> palavra fazer em português para japonês
       GoogleWeather            -> current weather
       GoogleTracklist          -> noisia outer edges tracklist

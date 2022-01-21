@@ -27,8 +27,7 @@ uninstall:
 
 build:
 	g++ -c source/main.cpp     -o bin/iris.o
-	g++    bin/*.o             -o bin/iris       -lcurl -O3 -lpthread
-# -llexbor-html
+	g++    bin/*.o             -o bin/iris       -lcurl -O3 -lpthread -llexbor
 
 modules:
 	mkdir -p bin

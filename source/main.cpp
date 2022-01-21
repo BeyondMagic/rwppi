@@ -196,9 +196,11 @@ int main( const int argc, char** argv )
         buffer << t.rdbuf();
         std::string page = buffer.str();
 
-        MethodRemote remote;
+        MethodRemote remote(page);
 
-        if (name == "Google") found = remote.google(page);
+        if (name == "Google") found = remote.google();
+
+        remote.clean();
 
         if (found) exit(0);
 

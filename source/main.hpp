@@ -14,10 +14,16 @@
  *limitations under the License.
  */
 
-#include "modules/ArgumentsParser.hpp"
-#include "modules/AssistantFun.hpp"
-#include "modules/Methods.hpp"
-#include "modules/URLDownloader.hpp"
+#include <iostream>
+#include <fstream>
+#include <curl/curl.h>
+#include <sstream>
+#include <vector>
+
+#include "modules/ArgumentsParser/ArgumentsParser.hpp"
+#include "modules/AssistantFun/AssistantFun.hpp"
+#include "modules/URLDownloader/URLDownloader.hpp"
+#include "modules/Methods/Methods.hpp"
 
 struct Util {
 
@@ -31,18 +37,17 @@ struct Util {
 
     std::vector<std::string> guarder = {};
 
-    // The sources' string-option are split by ",". We may modify this latter for better syntax, but for now, it does what it is supposed to do.
+    // I. The sources' string-option are split by ",". We may modify this latter for better syntax, but for now, it does what it is supposed to do.
     const char delimiter[2] = ",";
 
-    // Loop through each source to download
-    size_t pos = 0;
-    while ( (pos = list.find(delimiter)) != std::string::npos ) {
+    // II. Loop through each source to download
+    size_t pos = 0; while ( (pos = list.find(delimiter)) != std::string::npos ) {
 
-      // Current source on the loop
+      // A. Current source on the loop
       const std::string source = list.substr(0, pos);
       list.erase(0, pos + 1);
 
-      // Run download to get our little page :)
+      // B. Run download to get our little page :)
       guarder.push_back(source);
 
     }; guarder.push_back(list);

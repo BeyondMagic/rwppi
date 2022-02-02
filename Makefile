@@ -4,16 +4,31 @@ ifndef DESTDIR
 DESTDIR = ~/.local
 endif
 
-# C++20
-#OPTS = -fmodules-ts -std=c++20
-#STANDARD_MODULES = iostream string vector algorithm
-#MODULES = source/modules
-
 #---------------------------------------------
 
 all: build
 
 #----------------------------------------------
+
+methods:
+	g++ -c ./source/modules/Methods/Methods.cpp                 -o bin/methods.o
+
+arguments:
+	g++ -c ./source/modules/ArgumentsParser/ArgumentsParser.cpp -o bin/arguments.o
+
+url:
+	g++ -c ./source/modules/URLDownloader/URLDownloader.cpp     -o bin/url.o
+
+assistant:
+	g++ -c ./source/modules/AssistantFun/AssistantFun.cpp       -o bin/assistant.o
+
+tinyexpr:
+	gcc -c ./source/modules/Methods/tinyexpr/main.c             -o bin/tinyexpr.o
+
+modules: methods arguments url assistant tinyexpr
+	mkdir -p bin
+
+#-----------------------------------------------
 
 install: build
 	mkdir -p ${DESTDIR}/bin
@@ -26,22 +41,7 @@ uninstall:
 	rm -f ${DESTDIR}/bin/iris
 
 build:
-	g++ -c source/main.cpp     -o bin/iris.o
-	g++    bin/*.o             -o bin/iris       -lcurl -O3 -lpthread -llexbor
-
-modules:
-	mkdir -p bin
-	gcc -c source/modules/tinyexpr/main.c        -o bin/tinyexpr.o
-
-#-----------------c++20-------------------------
-
-#modules:
-#	mkdir -p bin
-#	gcc ${OPTS} -xc++-system-header ${STANDARD_MODULES}
-#	gcc -c ${OPTS} ${MODULES}/ArgumentParser/arguments.cpp -o bin/arguments.o
-#	gcc -c ${OPTS} ${MODULES}/Util/util.cpp -o bin/util.o
-#	gcc -c ${MODULES}/tinyexpr/tinyexpr.c -o bin/tinyexpr.o
-
-
+	g++ -c ./source/main.cpp     -o ./bin/iris.o
+	g++    ./bin/*.o             -o ./bin/iris                  -O3 -lpthread -llexbor -lcurl
 
 .PHONY: all build install clean uninstall

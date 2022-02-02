@@ -16,44 +16,19 @@
 
 #include <string>
 
-/*
- * This is a simple trivial non-performant affecter made for fun as Iris developmend can become quite tedious, you can always stop and just think of fun things you would like to see in certain exceptions or operands Iris cannot operate.
- */
-class AITricks {
-
-  public:
-
-    // public:
-    // Random item from an array.
-    // const unsigned int random ( & char */**/ )
-
-    AITricks ( void );
-
-    // In case Iris tried to perform a mathematical expression locally and remotely and did not found any results for it.
-    const std::string
-    math ( void );
-
-    // In case Iris received nothing.
-    const std::string
-    nothing ( void );
-
-};
-
-/*
- * Definitions...
- */
-
-AITricks::AITricks ( void ) {}
+#include "AssistantFun.hpp"
 
 const std::string
-AITricks::math ( void )
+AITricks::math ()
 {
   return "No, that's not how you put a mathematical expression onto Internet!";
 }
 
 const std::string
-AITricks::nothing ( void )
+AITricks::nothing ()
 {
   return "Haha, your query is so small! I can't even see it!";
   // What do you want me to do? Create information from out of thin electrons for you?"
 }
+
+// No wheater -> I don't know if you need a jacket, look out of the window you prick.

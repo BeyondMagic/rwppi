@@ -1,0 +1,3 @@
+clang
+%h -x
+%h c++-header

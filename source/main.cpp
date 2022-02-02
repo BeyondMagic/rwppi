@@ -17,53 +17,28 @@
 /*
  * Libraries are included in the following files and so is expectable for the language server
  * to recognize support for certain standards libraries classes and functions.
- *
- * TODO: When there's full support from GCC and a language server for modules, modularize the following files:
  */
 
 #include "main.hpp"
 
 /*
- * Iris is a CLI-assistant that receives any type of input and tries to find an answer for it.
- * It strives to have a simple and highly documented codebase while being extremely performant and lightweight.
+ * https://github.com/iris-cli/iris
  *
- *  https://github.com/iris-cli/iris
- *
- *  v0.0.1
+ * v0.0.1
  */
 int main( const int argc, char** argv )
 {
 
-  // This is read externally from the environment variable "LANG", set accordingly to the language
-  // you want Iris to operate on. Default is set "en_US" or English of USA.
   const std::string language = getenv("LANG")
-    // To get only the first four characters.
     ? std::string( getenv("LANG") ).substr(0, 5)
     : "en_US";
-
-  // Query is what you're sending to Iris to as a question, it will be used on all UNITS.
   std::string query = {};
-
-  // List of sources, which are divided by comma. Default is "Google", e.j: "Google,Wikipedia".
   std::string sources = "Google";
-
-  // Log everything it is doing.
   bool log = false;
-
-  // In case we want to skip local methods.
-  bool unit_two = true;
-
-  // In case the user defines methods to call upon.
+  bool unit_two = true; // In case we want to skip local methods.
   std::string methods = "All";
-
-  // To what unit Iris will operate on, by setting this it will be used to log.
-  // Default is 3 (all without log).
-  unsigned int unit = 3;
-
-  // For fun when throwing exceptions.
+  unsigned int unit = 3; // Default is 3 (all without log).
   AITricks tricks;
-
-  // Utilities we'll use to minimize code.
   Util util;
 
   /*
@@ -74,10 +49,8 @@ int main( const int argc, char** argv )
   {
     try {
 
-      // Initialize the method we use to parse our options.
       InputParser arguments(argc, argv);
 
-      // If there is those strings on the argument list.
       {
         if ( arguments.exists( "-h", "--help"    )) return util.print_help();
         if ( arguments.exists( "-S", "--sources" )) return util.print_sources();
@@ -85,34 +58,34 @@ int main( const int argc, char** argv )
         if ( arguments.exists( "-l", "--log"     )) log = true;
       }
 
-      // To get the value after the strings on the argument list
       {
-        std::string sources_handler = arguments.get( "-s", "--source" );
-        std::string methods_handler = arguments.get( "-m", "--method" );
-        std::string unit_handler    = arguments.get( "-u", "--unit"   );
 
+        std::string sources_handler = arguments.get( "-s", "--source" );
         if ( !sources_handler.empty() )
         {
           sources = sources_handler;
           unit_two = false;
         }
+
+        std::string methods_handler = arguments.get( "-m", "--method" );
         if ( !methods_handler.empty() )
         {
           methods = methods_handler;
           unit = 4;
         }
+
+        std::string unit_handler    = arguments.get( "-u", "--unit"   );
         if ( !unit_handler.empty() )
         {
           unit = stoi( unit_handler );
           if (unit == 1) log = true;
           else if ( unit < 1 || unit > 3 ) throw "[1] EE: The unit option must be betweeen 1-3.";
         }
+
       }
 
-      // Return what is left from the argument list after the parsing.
       query = arguments.left();
 
-      // Log everything this unit found.
       if (log)
       {
         std::cout << "[1] Logging settled defaults... "             << "\n";
@@ -124,29 +97,25 @@ int main( const int argc, char** argv )
         std::cout << "[1] Your query is exactly:      " << query    << "\n";
       }
 
-      /*
-       * Excpetions/errors that happen and will force the program to exit.
-       */
       if ( query.empty() ) throw 0;
 
     }
 
-    // To out of range unit numbers:
+    // For out of range unit numbers:
     catch ( const char * & a )
     {
       std::cerr << a << std::endl;
       return 1;
     }
 
-    // If there query is empty.
+    // For empty query.
     catch ( const int & a )
     {
       std::cerr << tricks.nothing() << std::endl;
       return 1;
     }
 
-    // In case stoi throws an invalid_argument error.
-    // Make explicit use of stoi and throws the rest to C++ handles it...
+    // For stoi throwing an invalid_argument error.
     catch ( const std::invalid_argument & ia )
     {
       std::cerr << "[1] EE: You must use the unit option along a number." << std::endl;
@@ -167,11 +136,11 @@ int main( const int argc, char** argv )
     if (unit >= 2 && unit_two)
     {
 
-      MethodLocal local;
+      MethodLocal local(query);
 
-      const bool found = local.all(query);
+      local.All();
 
-      if (found) exit(0);
+      if (response_found) exit(0);
 
     }
 
@@ -187,27 +156,28 @@ int main( const int argc, char** argv )
 
       for (std::string name : sources_list) {
 
-        bool found = false;
-
-        std::string page = downloader.download(name);
         //std::string page = downloader.download(name);
-        // TEMP: Will be soon removed. 4>
-        //std::ifstream t("HTML/kflay.html");
-        //std::stringstream buffer;
-        //buffer << t.rdbuf();
-        //std::string page = buffer.str();
+
+        //std::cout << page << std::endl;
+
+        // NOTE: to be used in case lack of Internet connection.
+        std::ifstream t("./HTML/kflay.html");
+        std::stringstream buffer;
+        buffer << t.rdbuf();
+        std::string page = buffer.str();
 
         MethodRemote remote(page);
 
-        if (name == "Google") found = remote.google();
+        if (name == "Google") remote.Google_All();
 
         remote.clean();
 
-        if (found) exit(0);
+        if (response_found) exit(0);
 
       }
 
       downloader.clean();
+      exit(1);
 
     }
   }

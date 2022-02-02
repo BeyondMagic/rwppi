@@ -40,6 +40,10 @@ static lxb_html_document_t * lexbor_document;
 static lxb_css_parser_t    * lexbor_parser;
 static lxb_selectors_t     * lexbor_selectors;
 
+#define WALKER_FUNCTION(name)               \
+  static lexbor_action_t                    \
+  __##name(lxb_dom_node_t *node, void *ctx)
+
 #define PRINT_FUNCTION(name)                                                       \
   lxb_status_t                                                                     \
   __##name (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx)
@@ -50,6 +54,10 @@ static lxb_selectors_t     * lexbor_selectors;
 #define METHOD(name) \
   context_t ctx;     \
   ctx.method = name
+
+//#define WALK_IN(name) \
+//  context_t ctx;     \
+//  ctx.method = name
 
 #define FIND(name)                                                                              \
   lxb_css_parser_t *copy_parser = lxb_css_parser_create();                                      \

@@ -14,26 +14,55 @@
  *limitations under the License.
  */
 
+#include "lexbor/html/html.h"
+#include "lexbor/dom/dom.h"
+#include <iostream>
+
 /*
  * Printers.
  */
+
+WALKER_FUNCTION(GoogleLyricsWalker)
+{
+    lexbor_str_t * str;
+    context_t *my = (context_t *) ctx;
+
+    if (my->i != 1) response_found = true;
+
+    switch (lxb_dom_node_tag_id(node)) {
+        case LXB_TAG__TEXT:
+            str = &lxb_dom_interface_text(node)->char_data.data;
+            std::cout << my->method << " " << (char *) str->data;
+            break;
+
+        case LXB_TAG_BR:
+            std::cout << "\n";
+            break;
+
+        case LXB_TAG__EM_COMMENT:
+        case LXB_TAG_SCRIPT:
+        case LXB_TAG_STYLE:
+            /* Skip node and his children's. */
+            return LEXBOR_ACTION_NEXT;
+
+        default:
+            break;
+    }
+
+    return LEXBOR_ACTION_OK;
+}
 
 PRINT_FUNCTION(GoogleLyrics)
 {
   context_t *my = (context_t *) ctx;
 
-  // A. Create string for the data handler.
-  const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
-  std::string page = (const char *) data;
+  if (my->i != 0) std::cout << my->method + "\n";
 
-  // B. If there's something on the string (found something)
-  if (!page.empty()) {
+  lxb_dom_node_simple_walk(node, __GoogleLyricsWalker, my);
 
-    page = std::regex_replace(page, std::regex("\n"), "\n" + my->method + " ");
-    std::cout << my->method << " " << page << "\n";
-    response_found = true;
+  std::cout << "\n";
 
-  }
+  my->i++;
 
   return LXB_STATUS_OK;
 }
@@ -83,9 +112,22 @@ void MethodRemote::Google_Math()
 void MethodRemote::Google_Lyrics()
 {
 
-  SELECTOR(".PZPZlf > div[jsname=\"WbKHeb\"] > .ujudUb.xpdxpnd, .hwc > .BNeawe.tAd8D.AP7Wnd > div > .BNeawe.tAd8D.AP7Wnd");
-  METHOD("GoogleLyrics");
-  FIND(multi_lines);
+  // I. Version of lyrics on many regions.
+  {
+    //SELECTOR(".PZPZlf > .bbVIQb[jsname=\"WbKHeb\"] > .ujudUb > *");
+    SELECTOR(".PZPZlf > .bbVIQb[jsname=\"WbKHeb\"] > *");
+    METHOD("GoogleLyrics");
+    FIND(GoogleLyrics);
+  }
+
+  // II. Version of lyrics on many other regions.
+  {
+    SELECTOR(".hwc > .BNeawe.tAd8D.AP7Wnd > div > .BNeawe.tAd8D.AP7Wnd");
+    METHOD("GoogleLyrics");
+    FIND(multi_lines);
+  }
+
+  // NOTE: No idea why Google has two different versions. Don't @ me.
 
 }
 

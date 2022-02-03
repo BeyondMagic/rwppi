@@ -156,17 +156,17 @@ int main( const int argc, char** argv )
 
       for (std::string name : sources_list) {
 
-        //std::string page = downloader.download(name);
+        std::string page = downloader.download(name);
 
         //std::cout << page << std::endl;
 
         //exit(0);
 
         // NOTE: to be used in case lack of Internet connection.
-        std::ifstream t("./HTML/luna.html");
-        std::stringstream buffer;
-        buffer << t.rdbuf();
-        std::string page = buffer.str();
+        //std::ifstream t("./love.html");
+        //std::stringstream buffer;
+        //buffer << t.rdbuf();
+        //std::string page = buffer.str();
 
         MethodRemote remote(page);
 

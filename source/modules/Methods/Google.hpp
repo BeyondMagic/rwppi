@@ -94,6 +94,34 @@ PRINT_FUNCTION(GoogleLyricsInformation)
   return LXB_STATUS_OK;
 }
 
+PRINT_FUNCTION(GoogleTranslation)
+{
+  context_t *my = (context_t *) ctx;
+
+  // 1. Sub method to parse easier the given information.
+  std::string method_type = {};
+
+  // 2. The order of information given by Google.
+  switch (my->i) {
+    case 0: method_type = my->method + " FromLanguage "; break;
+    case 1: method_type = my->method + " ToLanguage "; break;
+    case 2: method_type = my->method + " FromWord "; break;
+    case 3: method_type = my->method + " ToWord "; break;
+    case 4: method_type = my->method + " FromPronunciation "; break;
+    case 5: method_type = my->method + " ToPronunciation "; break;
+  }
+
+  // 3. Save the text content of the element.
+  const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
+
+  // 4. Print the text data of the element
+  my->response = my->response + method_type + (char *) data + "\n";
+
+  my->i++;
+
+  return LXB_STATUS_OK;
+}
+
 /*
  * Selectors and finders.
  */
@@ -151,17 +179,37 @@ void MethodRemote::Google_Lyrics()
 
 }
 
+void MethodRemote::Google_Translation()
+{
+
+  // 1. From language.
+  // 2. To language.
+  // 3. From word.
+  // 4. To word.
+  // 5. From pronunciation.
+  // 6. To pronunciation.
+  SELECTOR(".source-language, .target-language, #tw-source-text-ta, #tw-target-text, #tw-source-rmn, #tw-target-rmn");
+
+  METHOD("GoogleTranslation");
+  FIND(GoogleTranslation);
+
+  PRINT_RESPONSE();
+
+}
+
 void MethodRemote::Google_All( )
 {
 
   // A. Local methods call-in.
-  auto math_handler       = std::async(&MethodRemote::Google_Math,       this);
-  auto lyrics_handler     = std::async(&MethodRemote::Google_Lyrics,     this);
-  auto lyricsinfo_handler = std::async(&MethodRemote::Google_LyricsInfo, this);
+  auto math_handler        = std::async(&MethodRemote::Google_Math,       this);
+  auto lyrics_handler      = std::async(&MethodRemote::Google_Lyrics,     this);
+  auto lyricsinfo_handler  = std::async(&MethodRemote::Google_LyricsInfo, this);
+  auto translation_handler = std::async(&MethodRemote::Google_Translation, this);
 
   // B. Local methods call-out.
   math_handler.get();
   lyrics_handler.get();
   lyricsinfo_handler.get();
+  translation_handler.get();
 
 }

@@ -19,36 +19,40 @@
 #include <iostream>
 
 /*
- * Printers.
+ * Walkers.
  */
 
 WALKER_FUNCTION(GoogleLyricsWalker)
 {
-    lexbor_str_t * str;
-    context_t *my = (context_t *) ctx;
+  lexbor_str_t * str;
+  context_t *my = (context_t *) ctx;
 
-    switch (lxb_dom_node_tag_id(node)) {
-        case LXB_TAG__TEXT:
-            str = &lxb_dom_interface_text(node)->char_data.data;
-            my->response = my->response + my->method + " " + (char *)str->data;
-            break;
+  switch (lxb_dom_node_tag_id(node)) {
+    case LXB_TAG__TEXT:
+      str = &lxb_dom_interface_text(node)->char_data.data;
+      my->response = my->response + my->method + " " + (char *)str->data;
+      break;
 
-        case LXB_TAG_BR:
-            my->response = my->response + "\n";
-            break;
+    case LXB_TAG_BR:
+      my->response = my->response + "\n";
+      break;
 
-        case LXB_TAG__EM_COMMENT:
-        case LXB_TAG_SCRIPT:
-        case LXB_TAG_STYLE:
-            /* Skip node and his children's. */
-            return LEXBOR_ACTION_NEXT;
+    case LXB_TAG__EM_COMMENT:
+    case LXB_TAG_SCRIPT:
+    case LXB_TAG_STYLE:
+      /* Skip node and his children's. */
+      return LEXBOR_ACTION_NEXT;
 
-        default:
-            break;
-    }
+    default:
+      break;
+  }
 
-    return LEXBOR_ACTION_OK;
+  return LEXBOR_ACTION_OK;
 }
+
+/*
+ * Printers.
+ */
 
 PRINT_FUNCTION(GoogleLyrics)
 {
@@ -112,10 +116,11 @@ PRINT_FUNCTION(GoogleTranslation)
   }
 
   // 3. Save the text content of the element.
-  const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
+  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
+  const std::string data = std::string( (char *) lxb_data );
 
   // 4. Print the text data of the element
-  my->response = my->response + method_type + (char *) data + "\n";
+  if (!data.empty()) my->response = my->response + method_type + data + "\n";
 
   my->i++;
 
@@ -197,7 +202,7 @@ void MethodRemote::Google_Translation()
 
 }
 
-void MethodRemote::Google_All( )
+void MethodRemote::Google_All()
 {
 
   // A. Local methods call-in.

@@ -19,6 +19,7 @@ extern bool response_found;
 typedef struct {
 
   int i;
+  std::string response;
   std::string method;
 
 } context_t;

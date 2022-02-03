@@ -11,6 +11,7 @@ all: build
 #----------------------------------------------
 
 methods:
+	mkdir -p bin
 	g++ -c ./source/modules/Methods/Methods.cpp                 -o bin/methods.o
 
 arguments:
@@ -26,7 +27,6 @@ tinyexpr:
 	gcc -c ./source/modules/Methods/tinyexpr/main.c             -o bin/tinyexpr.o
 
 modules: methods arguments url assistant tinyexpr
-	mkdir -p bin
 
 #-----------------------------------------------
 
@@ -41,7 +41,7 @@ uninstall:
 	rm -f ${DESTDIR}/bin/iris
 
 build:
-	g++ -c ./source/main.cpp     -o ./bin/iris.o
-	g++    ./bin/*.o             -o ./bin/iris                  -O3 -lpthread -llexbor -lcurl
+	g++ -c ./source/main.cpp                                    -o ./bin/iris.o
+	g++    ./bin/*.o                                            -o ./bin/iris   -O3 -lpthread -llexbor -lcurl
 
 .PHONY: all build install clean uninstall

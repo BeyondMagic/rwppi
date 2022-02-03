@@ -184,4 +184,16 @@ struct Util {
     return 0;
   }
 
+  /*
+   * Verify if there's an answer and exit.
+   */
+  void
+  has_response ( void )
+  {
+
+    if (response_found) {
+      exit(0);
+    }
+  }
+
 };

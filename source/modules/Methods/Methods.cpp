@@ -35,10 +35,17 @@
 #include "Methods.hpp"
 
 bool response_found = false;
+
 static lxb_dom_node_t      * lexbor_body;
 static lxb_html_document_t * lexbor_document;
 static lxb_css_parser_t    * lexbor_parser;
 static lxb_selectors_t     * lexbor_selectors;
+
+#define PRINT_RESPONSE()       \
+  if (!ctx.response.empty()) { \
+    std::cout << ctx.response; \
+    response_found = true;     \
+  }
 
 #define WALKER_FUNCTION(name)               \
   static lexbor_action_t                    \
@@ -54,10 +61,6 @@ static lxb_selectors_t     * lexbor_selectors;
 #define METHOD(name) \
   context_t ctx;     \
   ctx.method = name
-
-//#define WALK_IN(name) \
-//  context_t ctx;     \
-//  ctx.method = name
 
 #define FIND(name)                                                                              \
   lxb_css_parser_t *copy_parser = lxb_css_parser_create();                                      \
@@ -84,7 +87,7 @@ PRINT_FUNCTION(one_line)
   const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
 
   // 2. Print the text data of the element
-  std::cout << my->method << " " << data << "\n";
+  my->response = my->response + my->method + " " + (char *) data + "\n";
 
   return LXB_STATUS_OK;
 };
@@ -102,8 +105,7 @@ PRINT_FUNCTION(multi_lines)
   if (!page.empty()) {
 
     page = std::regex_replace(page, std::regex("\n"), "\n" + std::string(my->method) + " ");
-    std::cout << my->method << " " << page << "\n";
-    response_found = true;
+    my->response = my->response + my->method + " " + page + "\n";
 
   }
 

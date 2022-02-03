@@ -25,16 +25,16 @@ void
 MethodLocal::Math()
 {
 
+  context_t ctx;
+
   // 1. Interpret the expression with the minimal library "tinyexpr".
   const double answer = te_interp(this->expression.c_str(), 0);
 
   // 2. If it's not a number (there's no valid answer for the expression).
   if ( !std::isnan(answer) ) {
 
-    // A. Print the answer.
-    std::cout << "LocalMath " << answer << "\n";
+    std::cout << answer << "\n";
 
-    // B. Set the response verifier to true to exit after the termination of all other threads.
     response_found = true;
 
   }

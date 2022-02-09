@@ -61,10 +61,10 @@ class MethodRemote
     Google_LyricsInfo();
 
     void
-    Google_Definition();
+    Google_Translation();
 
     void
-    Google_Translation();
+    Google_Definition();
 
     void
     Google_Weather();
@@ -159,14 +159,14 @@ extern lxb_status_t __multi_lines (lxb_dom_node_t *node, lxb_css_selector_specif
   context_t ctx;     \
   ctx.method = name
 
-#define FIND(name)                                                                                     \
-  lxb_css_parser_t *copy_parser = lxb_css_parser_create();                                             \
-  lxb_css_parser_init(copy_parser, NULL, NULL);                                                        \
-  lxb_selectors_t *copy_selectors = lxb_selectors_create();                                            \
-  lxb_selectors_init(copy_selectors);                                                                  \
-  lxb_dom_node_t *copy_body = lxb_dom_interface_node(lxb_html_document_body_element(lexbor_document)); \
-  lxb_css_selector_list_t *list = lxb_css_selectors_parse(copy_parser, s, sizeof(s) - 1);              \
-  lxb_status_t status = lxb_selectors_find(copy_selectors, copy_body, list, __##name , &ctx);          \
+#define FIND(name) \
+  lxb_css_parser_t *copy_parser                   = lxb_css_parser_create();                                                 \
+  lxb_css_parser_init(copy_parser, NULL, NULL);                                                                              \
+  lxb_selectors_t *copy_selectors                 = lxb_selectors_create();                                                  \
+  lxb_selectors_init(copy_selectors);                                                                                        \
+  lxb_dom_node_t *copy_body                       = lxb_dom_interface_node(lxb_html_document_body_element(lexbor_document)); \
+  lxb_css_selector_list_t *list                   = lxb_css_selectors_parse(copy_parser, s, sizeof(s) - 1);                  \
+  lxb_status_t status                             = lxb_selectors_find(copy_selectors, copy_body, list, __##name , &ctx);    \
   lxb_css_selector_list_destroy_memory(list)
 
 #define FAILURE(message)               \

@@ -127,6 +127,56 @@ PRINT_FUNCTION(GoogleTranslation)
   return LXB_STATUS_OK;
 }
 
+PRINT_FUNCTION(GoogleUnitConversion)
+{
+  context_t *my = (context_t *) ctx;
+
+  const lxb_char_t name[] = "value";
+  const lxb_char_t * value;
+  size_t value_len;
+  bool found_value = false;
+
+  // 1. Sub method to parse easier the given information.
+  std::string method_type = {};
+
+  // 2. The order of information given by Google.
+  switch (my->i) {
+    case 0:
+      method_type = my->method + " Header ";
+      break;
+    case 1:
+      method_type = my->method + " FromType ";
+      break;
+    case 2:
+      method_type = my->method + " ToType ";
+      break;
+    case 3:
+      value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 5, &value_len);
+      method_type = my->method + " FromValue " + std::string( (char * ) value );
+      found_value = true;
+      break;
+    case 4:
+      value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 5, &value_len);
+      method_type = my->method + " ToValue " + std::string( (char * ) value );
+      found_value = true;
+      break;
+    case 5:
+      method_type = my->method + " Formula ";
+      break;
+  }
+
+  // 3. Save the text content of the element.
+  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
+  std::string data = std::string( (char *) lxb_data );
+
+  // 4. Print the text data of the element
+  if (!data.empty() or found_value) my->response = my->response + method_type + data + '\n';
+
+  my->i++;
+
+  return LXB_STATUS_OK;
+}
+
 /*
  * Selectors and finders.
  */
@@ -202,19 +252,40 @@ void MethodRemote::Google_Translation()
 
 }
 
+void MethodRemote::Google_UnitConversion()
+{
+
+  // 1. Header.
+  // 2. From type.
+  // 3. To type.
+  // 4. From value.
+  // 5. To value.
+  // 6. Formula.
+  SELECTOR(".rYVYn.LNn04b option[selected], #ssSucf option[selected], #NotFQb option[selected], #HG5Seb input, #NotFQb input, .bjhkR");
+
+  METHOD("GoogleUnitConversion");
+  FIND(GoogleUnitConversion);
+
+  PRINT_RESPONSE();
+
+}
+
+
 void MethodRemote::Google_All()
 {
 
   // A. Local methods call-in.
-  auto math_handler        = std::async(&MethodRemote::Google_Math,       this);
-  auto lyrics_handler      = std::async(&MethodRemote::Google_Lyrics,     this);
-  auto lyricsinfo_handler  = std::async(&MethodRemote::Google_LyricsInfo, this);
-  auto translation_handler = std::async(&MethodRemote::Google_Translation, this);
+  auto math_handler           = std::async(&MethodRemote::Google_Math,           this);
+  auto lyrics_handler         = std::async(&MethodRemote::Google_Lyrics,         this);
+  auto lyricsinfo_handler     = std::async(&MethodRemote::Google_LyricsInfo,     this);
+  auto translation_handler    = std::async(&MethodRemote::Google_Translation,    this);
+  auto unitconversion_handler = std::async(&MethodRemote::Google_UnitConversion, this);
 
   // B. Local methods call-out.
   math_handler.get();
   lyrics_handler.get();
   lyricsinfo_handler.get();
   translation_handler.get();
+  unitconversion_handler.get();
 
 }

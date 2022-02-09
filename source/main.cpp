@@ -164,7 +164,7 @@ int main( const int argc, char** argv )
         //exit(0);
 
         // NOTE: to be used in case lack of Internet connection.
-        //std::ifstream t("./lol.html");
+        //std::ifstream t("./HTML/GoogleUnitConversion.html");
         //std::stringstream buffer;
         //buffer << t.rdbuf();
         //std::string page = buffer.str();
@@ -215,7 +215,7 @@ int main( const int argc, char** argv )
     //      // Don't accept unknown methods.
     //      default:
     //        std::cerr << "[4] EE: The method '" << method_string <<' hashed '" << method_hash << "' is unknown." << std::endl;
-    //        
+    //
     //        return 1;
     //    }
     // }

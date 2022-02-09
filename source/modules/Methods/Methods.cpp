@@ -70,21 +70,21 @@ MethodRemote::MethodRemote( const std::string & page )
   if (lexbor_document   == NULL   ) FAILURE("[Methods] Failed to create HTML Document");
 
   status = lxb_html_document_parse(lexbor_document, (lxb_char_t *) page.c_str(), page.length() - 1);
-  if (status     != LXB_STATUS_OK ) FAILURE("[Methods] Failed to parse HTML");
+  if (status      != LXB_STATUS_OK ) FAILURE("[Methods] Failed to parse HTML");
 
   // 1. Create CSS parser.
   lexbor_parser = lxb_css_parser_create();
   status = lxb_css_parser_init(lexbor_parser, NULL, NULL);
-  if (status     != LXB_STATUS_OK ) FAILURE("[Methods] Failed to create CSS parser.");
+  if (status      != LXB_STATUS_OK ) FAILURE("[Methods] Failed to create CSS parser.");
 
   // 2. Selectors.
   lexbor_selectors = lxb_selectors_create();
   status = lxb_selectors_init(lexbor_selectors);
-  if (status     != LXB_STATUS_OK ) FAILURE("[Methods] ");
+  if (status      != LXB_STATUS_OK ) FAILURE("[Methods] ");
 
   // 3. Find DOM/HTML nodes by selectors.
   lexbor_body = lxb_dom_interface_node(lxb_html_document_body_element(lexbor_document));
-  if (lexbor_body       == NULL          ) FAILURE("[Methods] Failed to create BODY interface.");
+  if (lexbor_body == NULL )          FAILURE("[Methods] Failed to create BODY interface.");
 
 }
 

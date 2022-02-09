@@ -42,6 +42,6 @@ uninstall:
 
 build:
 	g++   -c ./source/main.cpp                                    -o ./bin/iris.o
-	g++      ./bin/*.o                                            -o ./bin/iris   -O3 -lpthread -llexbor -lcurl
+	g++      ./bin/*.o                                            -o ./bin/iris   -O3 -lpthread -llexbor -lcurl -std=c++20
 
 .PHONY: all build install clean uninstall

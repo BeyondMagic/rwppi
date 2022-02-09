@@ -14,6 +14,8 @@
  *limitations under the License.
  */
 
+#pragma once
+
 /*
  * This is a simple trivial non-performant affecter made for fun as Iris developmend can become quite tedious, you can always stop and just think of fun things you would like to see in certain exceptions or operands Iris cannot operate.
  */

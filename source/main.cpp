@@ -29,17 +29,18 @@
 int main( const int argc, char** argv )
 {
 
+  AITricks tricks;
+  Util util;
+
   const std::string language = getenv("LANG")
     ? std::string( getenv("LANG") ).substr(0, 5)
     : "en_US";
-  std::string query = {};
-  std::string sources = "Google";
-  bool log = false;
-  bool unit_two = true; // In case we want to skip local methods.
-  std::string methods = "All";
-  unsigned int unit = 3; // Default is 3 (all without log).
-  AITricks tricks;
-  Util util;
+  std::string  query;
+  std::string  sources  = "0";
+  bool         log      = false;
+  bool         unit_two = true; // In case we want to skip local methods.
+  std::string  methods  = "0";
+  unsigned int unit     = 3;    // Default is all without log.
 
   /*
    * UNIT 0: Parse options and parameters.
@@ -88,13 +89,13 @@ int main( const int argc, char** argv )
 
       if (log)
       {
-        std::cout << "[1] Logging settled defaults... "             << "\n";
-        std::cout << "[1] Unit set:                   " << unit     << "\n";
-        std::cout << "[1] Language set:               " << language << "\n";
-        std::cout << "[1] Log set:                    " << log      << "\n";
-        std::cout << "[1] Sources set:                " << sources  << "\n";
-        std::cout << "[1] Method set:                 " << methods  << "\n";
-        std::cout << "[1] Your query is exactly:      " << query    << "\n";
+        std::cout << "[1] Logging settled defaults... "             << '\n';
+        std::cout << "[1] Unit set:                   " << unit     << '\n';
+        std::cout << "[1] Language set:               " << language << '\n';
+        std::cout << "[1] Log set:                    " << log      << '\n';
+        std::cout << "[1] Sources set:                " << sources  << '\n';
+        std::cout << "[1] Method set:                 " << methods  << '\n';
+        std::cout << "[1] Your query is exactly:      " << query    << '\n';
       }
 
       if ( query.empty() ) throw 0;
@@ -133,7 +134,7 @@ int main( const int argc, char** argv )
     /*
      * UNIT 2: Run the local methods for simple computation tasks such as mathematical ones.
      */
-    if (unit >= 2 && unit_two)
+    if (unit >= 2 and unit_two)
     {
 
       MethodLocal local(query);
@@ -152,9 +153,9 @@ int main( const int argc, char** argv )
 
       URLDownloader downloader(language, query);
 
-      std::vector<std::string> sources_list = util.stringlist_to_vector(sources);
+      std::vector<int> sources_list = util.list_to_vector(sources);
 
-      for (std::string name : sources_list) {
+      for (int name : sources_list) {
 
         std::string page = downloader.download(name);
 
@@ -163,22 +164,23 @@ int main( const int argc, char** argv )
         //exit(0);
 
         // NOTE: to be used in case lack of Internet connection.
-        //std::ifstream t("./love.html");
+        //std::ifstream t("./lol.html");
         //std::stringstream buffer;
         //buffer << t.rdbuf();
         //std::string page = buffer.str();
 
         MethodRemote remote(page);
 
-        if (name == "Google") remote.Google_All();
+        switch (name) {
 
-        remote.clean();
+          // Google.
+          case 0: remote.Google_All(); break;
 
-        util.has_response();
+        }
 
       }
 
-      downloader.clean();
+      util.has_response();
       exit(1);
 
     }

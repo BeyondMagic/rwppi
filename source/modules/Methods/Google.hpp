@@ -14,9 +14,9 @@
  *limitations under the License.
  */
 
-#include "lexbor/html/html.h"
-#include "lexbor/dom/dom.h"
-#include <iostream>
+#pragma once
+
+#include "Methods.hpp"
 
 /*
  * Walkers.
@@ -30,11 +30,11 @@ WALKER_FUNCTION(GoogleLyricsWalker)
   switch (lxb_dom_node_tag_id(node)) {
     case LXB_TAG__TEXT:
       str = &lxb_dom_interface_text(node)->char_data.data;
-      my->response = my->response + my->method + " " + (char *)str->data;
+      my->response = my->response + my->method + ' ' + (char *)str->data;
       break;
 
     case LXB_TAG_BR:
-      my->response = my->response + "\n";
+      my->response = my->response + '\n';
       break;
 
     case LXB_TAG__EM_COMMENT:
@@ -59,12 +59,12 @@ PRINT_FUNCTION(GoogleLyrics)
   context_t *my = (context_t *) ctx;
 
   // A. Don't add a newline before any text.
-  if (my->i != 0) my->response = my->response + my->method + "\n";
+  if (my->i != 0) my->response = my->response + my->method + '\n';
 
   lxb_dom_node_simple_walk(node, __GoogleLyricsWalker, my);
 
   // B. To separate the paragraphs of the lyrics.
-  my->response = my->response + "\n";
+  my->response = my->response + '\n';
 
   my->i++;
 
@@ -91,7 +91,7 @@ PRINT_FUNCTION(GoogleLyricsInformation)
   const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
 
   // 4. Print the text data of the element
-  my->response = my->response + method_type + (char *) data + "\n";
+  my->response = my->response + method_type + (char *) data + '\n';
 
   my->i++;
 
@@ -120,7 +120,7 @@ PRINT_FUNCTION(GoogleTranslation)
   const std::string data = std::string( (char *) lxb_data );
 
   // 4. Print the text data of the element
-  if (!data.empty()) my->response = my->response + method_type + data + "\n";
+  if (!data.empty()) my->response = my->response + method_type + data + '\n';
 
   my->i++;
 

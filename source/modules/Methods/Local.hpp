@@ -14,6 +14,10 @@
  *limitations under the License.
  */
 
+#pragma once
+
+#include "Methods.hpp"
+
 MethodLocal::MethodLocal( const std::string & data )
 {
 
@@ -25,17 +29,14 @@ void
 MethodLocal::Math()
 {
 
-  context_t ctx;
-
   // 1. Interpret the expression with the minimal library "tinyexpr".
   const double answer = te_interp(this->expression.c_str(), 0);
 
   // 2. If it's not a number (there's no valid answer for the expression).
   if ( !std::isnan(answer) ) {
 
-    std::cout << answer << "\n";
-
-    response_found = true;
+    std::cout << "LocalMath " << answer << '\n';
+    if (!response_found) response_found = true;
 
   }
 

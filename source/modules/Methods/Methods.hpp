@@ -14,7 +14,22 @@
  *limitations under the License.
  */
 
-extern bool response_found;
+#pragma once
+
+#include <regex>
+#include <string>
+#include <iostream>
+#include <future>
+#include <cmath>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include "tinyexpr/main.h"
+#include "lexbor/css/css.h"
+#include "lexbor/selectors/selectors.h"
+#include "lexbor/html/interface.h"
+#include "lexbor/html/html.h"
+#include "lexbor/html/parser.h"
 
 typedef struct {
 
@@ -31,8 +46,7 @@ class MethodRemote
 
     MethodRemote( const std::string & );
 
-    void
-    clean( void );
+    ~MethodRemote();
 
     void
     Google_All();
@@ -58,27 +72,49 @@ class MethodRemote
     void
     Google_TrackList();
 
-    // Weather            -> current weather
-    // Tracklist          -> noisia outer edges tracklist
-    // InformationList    -> social network cast
-    // HeaderList         -> Need for Speed Heat cars list
-    // Chemistry          -> density of hydrogen
-    // Pronunciation      -> pronounce linux
-    // UnitConversion     -> 1m into 1cm
-    // CurrencyConversion -> 1 USD in rupee
-    // InformationHeader  -> christmas day
-    // InformationWindow  -> who is garfield
-    // QuotesList         -> mahatma gandhi quotes
-    // TableSport         -> Chelsea next game
-    // InformationTable   -> the office
+    void
+    Google_InformationList();
+
+    void
+    Google_HeaderList();
+
+    void
+    Google_Chemistry();
+
+    void
+    Google_Pronunciation();
+
+    void
+    Google_UnitConversion();
+
+    void
+    Google_CurrencyConversion();
+
+    void
+    Google_InformationHeader();
+
+    void
+    Google_InformationWindow();
+
+    void
+    QuotesList();
+
+    void
+    TableSport();
+
+    void
+    InformationTable();
+
+  private:
+    lxb_dom_node_t      * lexbor_body;
+    lxb_html_document_t * lexbor_document;
+    lxb_css_parser_t    * lexbor_parser;
+    lxb_selectors_t     * lexbor_selectors;
 
 };
 
 class MethodLocal
 {
-
-  private:
-    std::string expression;
 
   public:
 
@@ -90,4 +126,51 @@ class MethodLocal
     void
     All();
 
+  private:
+    std::string expression;
+
 };
+
+extern bool         response_found;
+extern lxb_status_t __one_line    (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx);
+extern lxb_status_t __multi_lines (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx);
+
+/*
+ * Ease code writing.
+ */
+#define PRINT_RESPONSE()                        \
+  if (!ctx.response.empty()) {                  \
+    std::cout << ctx.response;                  \
+    if (!response_found) response_found = true; \
+  }
+
+#define WALKER_FUNCTION(name)               \
+  static lexbor_action_t                    \
+  __##name(lxb_dom_node_t *node, void *ctx)
+
+#define PRINT_FUNCTION(name)                                                       \
+  lxb_status_t                                                                     \
+  __##name (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx)
+
+#define SELECTOR(name) \
+  static const lxb_char_t s[] = name
+
+#define METHOD(name) \
+  context_t ctx;     \
+  ctx.method = name
+
+#define FIND(name)                                                                                     \
+  lxb_css_parser_t *copy_parser = lxb_css_parser_create();                                             \
+  lxb_css_parser_init(copy_parser, NULL, NULL);                                                        \
+  lxb_selectors_t *copy_selectors = lxb_selectors_create();                                            \
+  lxb_selectors_init(copy_selectors);                                                                  \
+  lxb_dom_node_t *copy_body = lxb_dom_interface_node(lxb_html_document_body_element(lexbor_document)); \
+  lxb_css_selector_list_t *list = lxb_css_selectors_parse(copy_parser, s, sizeof(s) - 1);              \
+  lxb_status_t status = lxb_selectors_find(copy_selectors, copy_body, list, __##name , &ctx);          \
+  lxb_css_selector_list_destroy_memory(list)
+
+#define FAILURE(message)               \
+  {                                    \
+    std::cerr << message << std::endl; \
+    exit(1);                           \
+  }

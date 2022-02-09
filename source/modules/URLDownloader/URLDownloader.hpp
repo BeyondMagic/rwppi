@@ -14,6 +14,11 @@
  *limitations under the License.
  */
 
+#pragma once
+
+#include <curl/curl.h>
+#include <iostream>
+
 /*
  * Finnally, this class will be the way to download our page and return its source code so that we can send it to the parser.
  * This is using cURL currently, though I don't see a better future ahead if it is not this minimal library that can be compiled
@@ -21,6 +26,16 @@
  */
 class URLDownloader
 {
+
+  public:
+
+    // Initialise cURL.
+    URLDownloader ( const std::string &, std::string & );
+
+    ~URLDownloader ();
+
+    // Use cURL to get the source code based on the type of source (std::string), such as "Google" or "Wikipedia".
+    const std::string download( int & );
 
   private:
     std::string response;
@@ -37,22 +52,5 @@ class URLDownloader
       return size * nmemb;
 
     }
-
-  public:
-
-    // Initialise cURL.
-    URLDownloader ( const std::string &, std::string & );
-
-    // Where we set the URL.
-    std::string &
-    getURL ( std::string & ) const;
-
-    // Use cURL to get the source code based on the type of source (std::string), such as "Google" or "Wikipedia".
-    // This will return a std::string. If it doesn't find a source that matches one of the list, then it will return nothing.
-    // So don't be dumb and send a source here to that doesn't exist at all.
-    const std::string download( std::string );
-
-    // Destroy the cURL method, after this the method will become unusable.
-    void clean( void ) const;
 
 };

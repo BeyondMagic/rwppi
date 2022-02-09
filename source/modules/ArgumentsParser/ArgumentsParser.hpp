@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 João F. BeyondMagic <koetemagie@gmail.com>
+ * Copyright 2021-2022 João F. BeyondMagic <koetemagie@gmail.com>
  *
  *Licensed under the Apache License, Version 2.0 (the "License");
  *you may not use this file except in compliance with the License.
@@ -14,12 +14,18 @@
  *limitations under the License.
  */
 
+#pragma once
+
+#include <string>
+#include <vector>
+#include <algorithm>
+
 #define EXIST_STRING(A) ( find( this->tokens.begin(), this->tokens.end(), A ) != this->tokens.end() )
 
 #define GET_STRING(A)		\
     itr = find( this -> tokens.begin(), this -> tokens.end(), A );		\
     remove(this->tokens.begin(), this->tokens.end(), A);		\
-    if ( itr != this->tokens.end() && ++itr != this->tokens.end() )
+    if ( itr != this->tokens.end() and ++itr != this->tokens.end() )
 
 #define REMOVE_STRING(A) (this->tokens.erase(std::remove(this->tokens.begin(), this->tokens.end(), A), this->tokens.end()))
 

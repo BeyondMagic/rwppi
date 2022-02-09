@@ -14,6 +14,8 @@
  *limitations under the License.
  */
 
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <curl/curl.h>
@@ -31,11 +33,11 @@ struct Util {
    * Take a string listed delimited by "," and transforms into a vector string.
    * For example, "One,Two,Three", will become "One" "Two" "Three".
    */
-  std::vector<std::string>
-  stringlist_to_vector ( std::string & list )
+  std::vector<int>
+  list_to_vector ( std::string & list )
   {
 
-    std::vector<std::string> guarder = {};
+    std::vector<int> guarder = {};
 
     // I. The sources' string-option are split by ",". We may modify this latter for better syntax, but for now, it does what it is supposed to do.
     const char delimiter[2] = ",";
@@ -44,13 +46,13 @@ struct Util {
     size_t pos = 0; while ( (pos = list.find(delimiter)) != std::string::npos ) {
 
       // A. Current source on the loop
-      const std::string source = list.substr(0, pos);
+      const int source = stoi(list.substr(0, pos));
       list.erase(0, pos + 1);
 
       // B. Run download to get our little page :)
       guarder.push_back(source);
 
-    }; guarder.push_back(list);
+    }; guarder.push_back(stoi(list));
 
     return guarder;
 
@@ -133,11 +135,9 @@ struct Util {
   {
 
     std::cout << R"(Sources can be any of the following:
-    Google      -> https://www.google.com/ -> Default source.
-    LetrasMusBr -> https://www.letras.mus.br/
-
-  Planned to add:
-    Google Images -> https://images.google.com/)" << std::endl;
+    0 Google      -> https://www.google.com/ -> Default source.
+    1 LetrasMusBr -> https://www.letras.mus.br/
+    2 Google Images -> https://images.google.com/)" << std::endl;
 
     return 0;
   }
@@ -150,36 +150,39 @@ struct Util {
   print_methods ( void )
   {
 
-    std::cout << R"(Local will always run unless source is specified.
+    std::cout <<
+    R"(Local will always run unless source is specified.
 
     Local:
-      LocalMath                -> 4+6/3+27+sqrt(25)
+      0 -> Math -> 4+6/3+27+sqrt(25)
 
   All remote methods will run by source specification, emphasis on all
   since it will scrape in a asynchronous manner for performance.
 
     Google:
-      GoogleMath               -> log_2(26) + 7/3
-      GoogleDefinition         -> meaning of love
-      GoogleLyrics             -> K.Flay - Maybe There's A Way lyrics
-      GoogleLyricsInformation  -> K.Flay - Maybe There's A Way lyrics
-      GoogleTranslation        -> palavra fazer em português para japonês
-      GoogleWeather            -> current weather
-      GoogleTracklist          -> noisia outer edges tracklist
-      GoogleInformationList    -> social network cast
-      GoogleHeaderList         -> Need for Speed Heat cars list
-      GoogleChemistry          -> density of hydrogen
-      GooglePronunciation      -> pronounce linux
-      GoogleUnitConversion     -> 1m into 1cm
-      GoogleCurrencyConversion -> 1 USD in rupee
-      GoogleInformationHeader  -> christmas day
-      GoogleInformationWindow  -> who is garfield
-      GoogleQuotesList         -> mahatma gandhi quotes
-      GoogleTableSport         -> Chelsea next game
-      GoogleInformationTable   -> the office
+
+       1 -> Math               -> log_2(26) + 7/3
+       2 -> Definition         -> meaning of love
+       3 -> Lyrics             -> K.Flay - Maybe There's A Way lyrics
+       4 -> LyricsInformation  -> K.Flay - Maybe There's A Way lyrics
+       5 -> Translation        -> palavra fazer em português para japonês
+       6 -> Weather            -> current weather
+       7 -> Tracklist          -> noisia outer edges tracklist
+       8 -> InformationList    -> social network cast
+       9 -> HeaderList         -> Need for Speed Heat cars list
+      10 -> Chemistry          -> density of hydrogen
+      11 -> Pronunciation      -> pronounce linux
+      12 -> UnitConversion     -> 1m into 1cm
+      13 -> CurrencyConversion -> 1 USD in rupee
+      14 -> InformationHeader  -> christmas day
+      15 -> InformationWindow  -> who is garfield
+      16 -> QuotesList         -> mahatma gandhi quotes
+      17 -> TableSport         -> Chelsea next game
+      18 -> InformationTable   -> the office
 
     LetrasMusBr -> https://www.letras.mus.br/
-      LMBLyrics                -> Grupo Revelação Tá Escrito)" << std::endl;
+      19 -> Lyrics -> Grupo Revelação Tá Escrito)"
+    << std::endl;
 
     return 0;
   }
@@ -194,6 +197,7 @@ struct Util {
     if (response_found) {
       exit(0);
     }
+
   }
 
 };

@@ -10,6 +10,14 @@ A: Iris does not aim to compete with proprietary assistants, it aims to be just 
 
 A: I've contributed to [**tuxi**](https://github.com/Bugswriter/tuxi/) until it wasn't maintainable any more, we strived to go too far with shell-scripting, which it shouldn't have happened. So we had to change our focus. David Sherriff made [oi](https://github.com/PureArtistry/oi/) in Rust way before [**tuxi**](https://github.com/Bugswriter/tuxi/) got to that point, which made [oi](https://github.com/PureArtistry/oi/) a better project to switch for at the time; but I wanted to do something that could be minimal, lightweight and could endure a long-term vision of performance and certain features, I saw this possible on modern C++, but not on Rust.
 
+**Q: Google information not displaying at all or incorrectly?**
+
+Google uses a complex system to limit requests, depending of language, country, and even the user-agent and of what words are being used it can block the information that is scraped.
+
+However, it often fails, for more of a better word, it is a failure. Since Iris is open-source, Google can easily fix it behind the curtains and make Iris not able to scrape Google with the potentiality.
+
+Nevertheless Google changes how the data is displayed, well, to be honest, it changes IDs, TAGs and CLASSEs. Which makes it impossible to create a stable version of Google scraping, so the workaround is to simply update it when it changes.
+
 **Q: How I can get a prettier data with icons or lines, weather, etc...? Or show Images?**
 
 A: You can't only with Iris. Iris gives you the information, what you do with it is on you. Some people may be interested to make external projects to prettify Iris output, but this will not be implemented on Iris itself.

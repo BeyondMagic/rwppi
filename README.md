@@ -2,7 +2,7 @@
 
 **Note:**
 
-Iris will take far longer than what I anticipated, the first working version will be released under 1.0.0 tag, see #1.
+Iris will take far longer than what I anticipated, the first working version will be released under 1.0.0 tag.
 
 ---
 
@@ -67,15 +67,9 @@ Now the future is a cold nightmare
 
 For now, iris cannot be installed under a general binary, since it is still in alpha development.
 
-If you want, however, build it to test yourself, you can. See [CONTRIBUTING.md](/CONTRIBUTING.md).
+If you want, however, build it to test yourself, you can. See [Makefile](/Makefile).
 
 **Note:** I do not recommend you installing a single binary on your system or building just once the source code, because how information is displayed can often change, and for that often updates are necessary.
-
----
-
-# Contributing
-
-See [CONTRIBUTING.md](/CONTRIBUTING.md) and #1.
 
 ---
 

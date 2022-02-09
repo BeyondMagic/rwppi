@@ -1,3 +1,9 @@
 clang
-%h -x
-%h c++-header
+%cpp -std=c++20
+%hpp -std=c++20
+-Werror=return-type
+-Werror=implicit-fallthrough
+-Werror=implicit-int-conversion
+-Werror=narrowing
+-Werror=uninitialized
+-Werror=pointer-to-int-cast"

@@ -35,7 +35,10 @@ MethodLocal::Math()
   // 2. If it's not a number (there's no valid answer for the expression).
   if ( !std::isnan(answer) ) {
 
-    std::cout << "LocalMath " << answer << '\n';
+    std::string name = "LocalMath";
+
+    std::cout << colour_method(name) << ' ' << answer << '\n';
+
     if (!response_found) response_found = true;
 
   }

@@ -36,11 +36,14 @@ int main( const int argc, char** argv )
     ? std::string( getenv("LANG") ).substr(0, 5)
     : "en_US";
   std::string  query;
-  std::string  sources  = "0";
-  bool         log      = false;
-  bool         unit_two = true; // In case we want to skip local methods.
-  std::string  methods  = "0";
-  unsigned int unit     = 3;    // Default is all without log.
+  std::string  sources   = "0";
+  bool         log       = false;
+  bool         load_file = false;
+  bool         save_file = false;
+  bool         unit_two  = true; // In case we want to skip local methods.
+  std::string  methods   = "0";
+  unsigned int unit      = 3;    // Default is all without log.
+
 
   /*
    * UNIT 0: Parse options and parameters.
@@ -53,33 +56,47 @@ int main( const int argc, char** argv )
       InputParser arguments(argc, argv);
 
       {
-        if ( arguments.exists( "-h", "--help"    )) return util.print_help();
-        if ( arguments.exists( "-S", "--sources" )) return util.print_sources();
-        if ( arguments.exists( "-M", "--methods" )) return util.print_methods();
-        if ( arguments.exists( "-l", "--log"     )) log = true;
+        if ( arguments.exists( "-h", "--help"    ) ) return util.print_help();
+        if ( arguments.exists( "-S", "--sources" ) ) return util.print_sources();
+        if ( arguments.exists( "-M", "--methods" ) ) return util.print_methods();
+        if ( arguments.exists( "-l", "--log"     ) ) log = true;
+        if ( arguments.exists( "-t", "--to"      ) ) save_file = true;
+        if ( arguments.exists( "-L", "--load"    ) ) load_file = true;
+
+        if ( isatty(STDIN_FILENO) and isatty(fileno(stdin)) )
+        {
+          is_atty = true;
+        }
+
+        if (save_file and load_file) throw "[1] EE: '--to' and '--load' options are exclusive.";
       }
 
       {
 
-        std::string sources_handler = arguments.get( "-s", "--source" );
-        if ( !sources_handler.empty() )
+        std::string handler_settings;
+
+        handler_settings = arguments.get( "-s", "--source" );
+        if ( !handler_settings.empty() )
         {
-          sources = sources_handler;
+          sources = handler_settings;
+          handler_settings.clear();
           unit_two = false;
         }
-
-        std::string methods_handler = arguments.get( "-m", "--method" );
-        if ( !methods_handler.empty() )
+        handler_settings = arguments.get( "-m", "--method" );
+        if ( !handler_settings.empty() )
         {
-          methods = methods_handler;
+          methods = handler_settings;
+          handler_settings.clear();
           unit = 4;
         }
 
-        std::string unit_handler    = arguments.get( "-u", "--unit"   );
-        if ( !unit_handler.empty() )
+        handler_settings = arguments.get( "-u", "--unit"   );
+        if ( !handler_settings.empty() )
         {
-          unit = stoi( unit_handler );
-          if (unit == 1) log = true;
+          unit = stoi( handler_settings );
+          handler_settings.clear();
+
+          if  (unit == 1) log = true;
           else if ( unit < 1 || unit > 3 ) throw "[1] EE: The unit option must be betweeen 1-3.";
         }
 
@@ -89,13 +106,16 @@ int main( const int argc, char** argv )
 
       if (log)
       {
-        std::cout << "[1] Logging settled defaults... "             << '\n';
-        std::cout << "[1] Unit set:                   " << unit     << '\n';
-        std::cout << "[1] Language set:               " << language << '\n';
-        std::cout << "[1] Log set:                    " << log      << '\n';
-        std::cout << "[1] Sources set:                " << sources  << '\n';
-        std::cout << "[1] Method set:                 " << methods  << '\n';
-        std::cout << "[1] Your query is exactly:      " << query    << '\n';
+        std::cout << "[1] Logging settled defaults... "              << '\n';
+        std::cout << "[1] Unit set:                   " << unit      << '\n';
+        std::cout << "[1] Language set:               " << language  << '\n';
+        std::cout << "[1] Log set:                    " << log       << '\n';
+        std::cout << "[1] Sources set:                " << sources   << '\n';
+        std::cout << "[1] Method set:                 " << methods   << '\n';
+        std::cout << "[1] Your query is exactly:      " << query     << '\n';
+        std::cout << "[1] Is on ATTY (Terminal):      " << is_atty   << '\n';
+        std::cout << "[1] Save file:                  " << save_file << '\n';
+        std::cout << "[1] Load file:                  " << load_file << '\n';
       }
 
       if ( query.empty() ) throw 0;
@@ -157,17 +177,30 @@ int main( const int argc, char** argv )
 
       for (int name : sources_list) {
 
-        std::string page = downloader.download(name);
+        std::string page;
 
-        //std::cout << page << std::endl;
+        if (load_file) {
 
-        //exit(0);
+          std::ifstream t(query);
+          std::stringstream buffer;
+          buffer << t.rdbuf();
+          page = buffer.str();
 
-        // NOTE: to be used in case lack of Internet connection.
-        //std::ifstream t("./HTML/GoogleUnitConversion.html");
-        //std::stringstream buffer;
-        //buffer << t.rdbuf();
-        //std::string page = buffer.str();
+        } else {
+
+          page = downloader.download(name);
+
+        }
+
+        if (save_file) {
+
+          if (page.empty()) exit(1);
+
+          std::cout << page << std::endl;
+
+          exit(0);
+
+        }
 
         MethodRemote remote(page);
 

@@ -20,6 +20,7 @@
 #include "Google.hpp"
 
 bool response_found = false;
+bool is_atty = false;
 
 // Format one single line of an element.
 PRINT_FUNCTION(one_line)
@@ -99,5 +100,25 @@ MethodRemote::~MethodRemote()
 
   // 3. Destroy HTML Document.
   lxb_html_document_destroy(lexbor_document);
+
+}
+
+std::string &
+colour_method( std::string & method ) {
+
+  if (is_atty)
+    method = "\033[32;1m" + method + "\033[0m";
+
+  return method;
+
+}
+
+std::string &
+colour_type( std::string & type ) {
+
+  if (is_atty)
+    type = "\033[92;1m" + type + "\033[0m";
+
+  return type;
 
 }

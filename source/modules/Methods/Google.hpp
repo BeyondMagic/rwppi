@@ -30,7 +30,7 @@ WALKER_FUNCTION(GoogleLyricsWalker)
   switch (lxb_dom_node_tag_id(node)) {
     case LXB_TAG__TEXT:
       str = &lxb_dom_interface_text(node)->char_data.data;
-      my->response = my->response + my->method + ' ' + (char *)str->data;
+      my->response = my->response + my->method + ' ' + (char *) str->data;
       break;
 
     case LXB_TAG_BR:
@@ -75,25 +75,30 @@ PRINT_FUNCTION(GoogleLyricsInformation)
 {
   context_t *my = (context_t *) ctx;
 
-  // 1. Sub method to parse easier the given information.
-  std::string method_type = {};
+  // 1. The order of information given by Google.
+  {
+    switch (my->i) {
+      case 0: my->type = "Title";       break;
+      case 1: my->type = "Singer";      break;
+      case 2: my->type = "Source";      break;
+      case 3: my->type = "Songwriters"; break;
+      case 4: my->type = "Studios";     break;
+    }
 
-  // 2. The order of information given by Google.
-  switch (my->i) {
-    case 0: method_type = my->method + " Title "; break;
-    case 1: method_type = my->method + " Singer "; break;
-    case 2: method_type = my->method + " Source "; break;
-    case 3: method_type = my->method + " Songwriters "; break;
-    case 4: method_type = my->method + " Studios "; break;
+    my->type = colour_type(my->type);
   }
 
-  // 3. Save the text content of the element.
-  const lxb_char_t * data = lxb_dom_node_text_content(node, nullptr);
+  // 2. Save the text content of the element.
+  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
+  const std::string data = std::string( (char *) lxb_data );
 
-  // 4. Print the text data of the element
-  my->response = my->response + method_type + (char *) data + '\n';
+  // 3. ...
+  if (!data.empty()) {
+    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n';
+  }
 
   my->i++;
+  my->type.clear();
 
   return LXB_STATUS_OK;
 }
@@ -102,27 +107,31 @@ PRINT_FUNCTION(GoogleTranslation)
 {
   context_t *my = (context_t *) ctx;
 
-  // 1. Sub method to parse easier the given information.
-  std::string method_type = {};
+  // 1. The order of information given by Google.
+  {
+    switch (my->i) {
+      case 0: my->type = "FromLanguage";      break;
+      case 1: my->type = "ToLanguage";        break;
+      case 2: my->type = "FromWord";          break;
+      case 3: my->type = "ToWord";            break;
+      case 4: my->type = "FromPronunciation"; break;
+      case 5: my->type = "ToPronunciation";   break;
+    }
 
-  // 2. The order of information given by Google.
-  switch (my->i) {
-    case 0: method_type = my->method + " FromLanguage "; break;
-    case 1: method_type = my->method + " ToLanguage "; break;
-    case 2: method_type = my->method + " FromWord "; break;
-    case 3: method_type = my->method + " ToWord "; break;
-    case 4: method_type = my->method + " FromPronunciation "; break;
-    case 5: method_type = my->method + " ToPronunciation "; break;
+    my->type = colour_type(my->type);
   }
 
-  // 3. Save the text content of the element.
+  // 2. Save the text content of the element.
   const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
   const std::string data = std::string( (char *) lxb_data );
 
-  // 4. Print the text data of the element
-  if (!data.empty()) my->response = my->response + method_type + data + '\n';
+  // 3. Print the text data of the element
+  if (!data.empty()) {
+    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n';
+  }
 
   my->i++;
+  my->type.clear();
 
   return LXB_STATUS_OK;
 }
@@ -131,38 +140,43 @@ PRINT_FUNCTION(GoogleUnitConversion)
 {
   context_t *my = (context_t *) ctx;
 
-  const lxb_char_t name[] = "value";
-  const lxb_char_t * value;
-  size_t value_len;
-  bool found_value = false;
-
-  // 1. Sub method to parse easier the given information.
-  std::string method_type = {};
-
   // 2. The order of information given by Google.
-  switch (my->i) {
-    case 0:
-      method_type = my->method + " Header ";
-      break;
-    case 1:
-      method_type = my->method + " FromType ";
-      break;
-    case 2:
-      method_type = my->method + " ToType ";
-      break;
-    case 3:
-      value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 5, &value_len);
-      method_type = my->method + " FromValue " + std::string( (char * ) value );
-      found_value = true;
-      break;
-    case 4:
-      value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 5, &value_len);
-      method_type = my->method + " ToValue " + std::string( (char * ) value );
-      found_value = true;
-      break;
-    case 5:
-      method_type = my->method + " Formula ";
-      break;
+  {
+    const lxb_char_t name[] = "value";
+    const lxb_char_t * value;
+    std::string value_handler;
+    size_t value_len;
+
+    switch (my->i) {
+      case 0:
+        my->type = "Header";
+        break;
+      case 1:
+        my->type = "FromType";
+        break;
+      case 2:
+        my->type = "ToType";
+        break;
+      case 3:
+        value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 5, &value_len);
+        my->type = "FromValue";
+        value_handler = std::string( (char * ) value );
+        break;
+      case 4:
+        value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 5, &value_len);
+        my->type = "ToValue";
+        value_handler = std::string( (char * ) value );
+        break;
+      case 5:
+        my->type = "Formula";
+        break;
+    }
+
+    my->type = colour_type(my->type);
+
+    if (!value_handler.empty())
+      my->response = my->response + my->method + ' ' + my->type + ' ' + value_handler + '\n';
+
   }
 
   // 3. Save the text content of the element.
@@ -170,9 +184,13 @@ PRINT_FUNCTION(GoogleUnitConversion)
   std::string data = std::string( (char *) lxb_data );
 
   // 4. Print the text data of the element
-  if (!data.empty() or found_value) my->response = my->response + method_type + data + '\n';
+  if (!data.empty()) {
+    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n';
+  }
 
   my->i++;
+
+  my->type.clear();
 
   return LXB_STATUS_OK;
 }
@@ -188,7 +206,7 @@ void MethodRemote::Google_LyricsInfo()
   // B. Singer.
   // C. Source.
   // D. Songwriters & Studios.
-  SELECTOR(".Ftghae > .SPZz6b > .qrShPb, .Ftghae > .SPZz6b > .wwUB2c, .uHNKed > .Oh5wg > .j04ED, .Oh5wg > .xpdxpnd > .auw0zb");
+  SELECTOR("div[data-attrid=\"title\"], div[data-attrid=\"subtitle\"], .f41I7.ai4HXb.j04ED, .f41I7.ai4HXb > .auw0zb");
 
   METHOD("GoogleLyricsInformation");
   FIND(GoogleLyricsInformation);
@@ -212,9 +230,9 @@ void MethodRemote::Google_Math()
 void MethodRemote::Google_Lyrics()
 {
 
-  // I. Version of lyrics on many regions.
+  // I. New version of lyrics on many regions.
   {
-    SELECTOR(".PZPZlf > .bbVIQb[jsname=\"WbKHeb\"] > *");
+    SELECTOR("div[data-lyricid] div[jsname=\"WbKHeb\"] > *");
 
     METHOD("GoogleLyrics");
     FIND(GoogleLyrics);

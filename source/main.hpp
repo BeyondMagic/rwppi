@@ -21,6 +21,8 @@
 #include <curl/curl.h>
 #include <sstream>
 #include <vector>
+#include <unistd.h>
+#include <stdio.h>
 
 #include "modules/ArgumentsParser/ArgumentsParser.hpp"
 #include "modules/AssistantFun/AssistantFun.hpp"
@@ -85,8 +87,11 @@ struct Util {
         2 = Evaluate local methods.
         3 = Evaluate remote methods.
 
-    --json | -j
-      JSONify the output. Useful to feed other programs.
+    --to | -t
+      Send HTML to output if found.
+
+    --load | -L
+      Load file to scrape without downloading.
 
     --log | -l
       Activates logging for debugging and information for developers.

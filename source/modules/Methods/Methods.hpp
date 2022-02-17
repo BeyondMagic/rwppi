@@ -31,11 +31,18 @@
 #include "lexbor/html/html.h"
 #include "lexbor/html/parser.h"
 
+std::string &
+colour_method( std::string & method);
+
+std::string &
+colour_type( std::string & type );
+
 typedef struct {
 
   int i;
   std::string response;
   std::string method;
+  std::string type;
 
 } context_t;
 
@@ -132,6 +139,7 @@ class MethodLocal
 };
 
 extern bool         response_found;
+extern bool         is_atty;
 extern lxb_status_t __one_line    (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx);
 extern lxb_status_t __multi_lines (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx);
 
@@ -157,7 +165,8 @@ extern lxb_status_t __multi_lines (lxb_dom_node_t *node, lxb_css_selector_specif
 
 #define METHOD(name) \
   context_t ctx;     \
-  ctx.method = name
+  ctx.method = name; \
+  ctx.method = colour_method(ctx.method)
 
 #define FIND(name) \
   lxb_css_parser_t *copy_parser                   = lxb_css_parser_create();                                                 \

@@ -30,7 +30,7 @@ modules: methods arguments url assistant tinyexpr
 
 #-----------------------------------------------
 
-install: build
+install: modules build
 	mkdir -p ${DESTDIR}/bin
 	cp    -f ./bin/iris ${DESTDIR}/bin/iris
 

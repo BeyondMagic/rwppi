@@ -206,7 +206,7 @@ void MethodRemote::Google_LyricsInfo()
   // B. Singer.
   // C. Source.
   // D. Songwriters & Studios.
-  SELECTOR("div[data-attrid=\"title\"], div[data-attrid=\"subtitle\"], .f41I7.ai4HXb.j04ED, .f41I7.ai4HXb > .auw0zb");
+  SELECTOR("h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb");
 
   METHOD("GoogleLyricsInformation");
   FIND(GoogleLyricsInformation);
@@ -289,15 +289,28 @@ void MethodRemote::Google_UnitConversion()
 }
 
 
+void MethodRemote::Google_InformationHeader()
+{
+
+  SELECTOR("div[role=\"heading\"]");
+
+  METHOD("GoogleInformationHeader");
+  FIND(one_line);
+
+  PRINT_RESPONSE();
+
+}
+
 void MethodRemote::Google_All()
 {
 
   // A. Local methods call-in.
-  auto math_handler           = std::async(&MethodRemote::Google_Math,           this);
-  auto lyrics_handler         = std::async(&MethodRemote::Google_Lyrics,         this);
-  auto lyricsinfo_handler     = std::async(&MethodRemote::Google_LyricsInfo,     this);
-  auto translation_handler    = std::async(&MethodRemote::Google_Translation,    this);
-  auto unitconversion_handler = std::async(&MethodRemote::Google_UnitConversion, this);
+  auto math_handler              = std::async(&MethodRemote::Google_Math,              this);
+  auto lyrics_handler            = std::async(&MethodRemote::Google_Lyrics,            this);
+  auto lyricsinfo_handler        = std::async(&MethodRemote::Google_LyricsInfo,        this);
+  auto translation_handler       = std::async(&MethodRemote::Google_Translation,       this);
+  auto unitconversion_handler    = std::async(&MethodRemote::Google_UnitConversion,    this);
+  auto informationheader_handler = std::async(&MethodRemote::Google_InformationHeader, this);
 
   // B. Local methods call-out.
   math_handler.get();
@@ -305,5 +318,6 @@ void MethodRemote::Google_All()
   lyricsinfo_handler.get();
   translation_handler.get();
   unitconversion_handler.get();
+  informationheader_handler.get();
 
 }

@@ -206,7 +206,7 @@ void MethodRemote::Google_LyricsInfo()
   // B. Singer.
   // C. Source.
   // D. Songwriters & Studios.
-  SELECTOR("h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb");
+  SELECTOR(".kp-hc h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb");
 
   METHOD("GoogleLyricsInformation");
   FIND(GoogleLyricsInformation);
@@ -292,7 +292,7 @@ void MethodRemote::Google_UnitConversion()
 void MethodRemote::Google_InformationHeader()
 {
 
-  SELECTOR("div[role=\"heading\"]");
+  SELECTOR(".g div[role=\"heading\"] > div > div");
 
   METHOD("GoogleInformationHeader");
   FIND(one_line);

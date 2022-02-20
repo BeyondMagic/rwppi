@@ -65,7 +65,7 @@ Now the future is a cold nightmare
 
 # Installation
 
-For now, iris cannot be installed under a general binary, since it is still in alpha development.
+The releases binaries can be get up [here](https://github.com/iris-cli/iris/releases).
 
 If you want, however, build it to test yourself, you can. See [Makefile](/Makefile).
 

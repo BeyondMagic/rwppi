@@ -292,7 +292,7 @@ void MethodRemote::Google_UnitConversion()
 void MethodRemote::Google_InformationHeader()
 {
 
-  SELECTOR(".g div[role=\"heading\"] > div > div");
+  SELECTOR(".g div[role=\"heading\"] > div > div, .obcontainer .card-section *");
 
   METHOD("GoogleInformationHeader");
   FIND(one_line);

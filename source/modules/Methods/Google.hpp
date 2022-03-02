@@ -301,6 +301,19 @@ void MethodRemote::Google_InformationHeader()
 
 }
 
+
+void MethodRemote::Google_Correction()
+{
+
+  SELECTOR("#fprs > *:nth-child(-n+2)");
+
+  METHOD("GoogleCorrection");
+  FIND(one_line);
+
+  PRINT_RESPONSE();
+
+}
+
 void MethodRemote::Google_All()
 {
 
@@ -308,6 +321,7 @@ void MethodRemote::Google_All()
   auto math_handler              = std::async(&MethodRemote::Google_Math,              this);
   auto lyrics_handler            = std::async(&MethodRemote::Google_Lyrics,            this);
   auto lyricsinfo_handler        = std::async(&MethodRemote::Google_LyricsInfo,        this);
+  auto correction_handler        = std::async(&MethodRemote::Google_Correction,        this);
   auto translation_handler       = std::async(&MethodRemote::Google_Translation,       this);
   auto unitconversion_handler    = std::async(&MethodRemote::Google_UnitConversion,    this);
   auto informationheader_handler = std::async(&MethodRemote::Google_InformationHeader, this);
@@ -316,6 +330,7 @@ void MethodRemote::Google_All()
   math_handler.get();
   lyrics_handler.get();
   lyricsinfo_handler.get();
+  correction_handler.get();
   translation_handler.get();
   unitconversion_handler.get();
   informationheader_handler.get();

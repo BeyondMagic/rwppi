@@ -65,6 +65,9 @@ class MethodRemote
     Google_Lyrics();
 
     void
+    Google_Correction();
+
+    void
     Google_LyricsInfo();
 
     void

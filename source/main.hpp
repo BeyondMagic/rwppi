@@ -184,6 +184,7 @@ struct Util {
       16 -> QuotesList         -> mahatma gandhi quotes
       17 -> TableSport         -> Chelsea next game
       18 -> InformationTable   -> the office
+      19 -> GoogleCorrection   -> lirics in the end
 
     LetrasMusBr -> https://www.letras.mus.br/
       19 -> Lyrics -> Grupo Revelação Tá Escrito)"

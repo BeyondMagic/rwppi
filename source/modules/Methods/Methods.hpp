@@ -39,7 +39,7 @@ colour_type( std::string & type );
 
 typedef struct {
 
-  int i;
+  unsigned int i;
   std::string response;
   std::string method;
   std::string type;
@@ -54,6 +54,11 @@ class MethodRemote
     MethodRemote( const std::string & );
 
     ~MethodRemote();
+
+    void
+    extract_info(std::string, std::string,
+                 lxb_status_t (*)(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *),
+                 lxb_html_document_t *);
 
     void
     Google_All();
@@ -146,40 +151,13 @@ extern bool         is_atty;
 extern lxb_status_t __one_line    (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx);
 extern lxb_status_t __multi_lines (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx);
 
-/*
- * Ease code writing.
- */
-#define PRINT_RESPONSE()                        \
-  if (!ctx.response.empty()) {                  \
-    std::cout << ctx.response;                  \
-    if (!response_found) response_found = true; \
-  }
-
 #define WALKER_FUNCTION(name)               \
-  static lexbor_action_t                    \
+  lexbor_action_t                    \
   __##name(lxb_dom_node_t *node, void *ctx)
 
 #define PRINT_FUNCTION(name)                                                       \
   lxb_status_t                                                                     \
   __##name (lxb_dom_node_t *node, lxb_css_selector_specificity_t *spec, void *ctx)
-
-#define SELECTOR(name) \
-  static const lxb_char_t s[] = name
-
-#define METHOD(name) \
-  context_t ctx;     \
-  ctx.method = name; \
-  ctx.method = colour_method(ctx.method)
-
-#define FIND(name) \
-  lxb_css_parser_t *copy_parser                   = lxb_css_parser_create();                                                 \
-  lxb_css_parser_init(copy_parser, NULL, NULL);                                                                              \
-  lxb_selectors_t *copy_selectors                 = lxb_selectors_create();                                                  \
-  lxb_selectors_init(copy_selectors);                                                                                        \
-  lxb_dom_node_t *copy_body                       = lxb_dom_interface_node(lxb_html_document_body_element(lexbor_document)); \
-  lxb_css_selector_list_t *list                   = lxb_css_selectors_parse(copy_parser, s, sizeof(s) - 1);                  \
-  lxb_status_t status                             = lxb_selectors_find(copy_selectors, copy_body, list, __##name , &ctx);    \
-  lxb_css_selector_list_destroy_memory(list)
 
 #define FAILURE(message)               \
   {                                    \

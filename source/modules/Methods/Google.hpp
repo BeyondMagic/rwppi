@@ -206,24 +206,23 @@ void MethodRemote::Google_LyricsInfo()
   // B. Singer.
   // C. Source.
   // D. Songwriters & Studios.
-  SELECTOR(".kp-hc h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb");
-
-  METHOD("GoogleLyricsInformation");
-  FIND(GoogleLyricsInformation);
-
-  PRINT_RESPONSE();
+  extract_info(
+    ".kp-hc h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb",
+    "GoogleLyricsInformation",
+    *__GoogleLyricsInformation,
+    lexbor_document);
 
 }
 
 void MethodRemote::Google_Math()
 {
 
-  // A. Result of expression shown..
-  SELECTOR("#cwos");
-
-  METHOD("GoogleMath");
-  FIND(one_line);
-  PRINT_RESPONSE();
+  // A. Result of expression shown.
+  extract_info(
+    ".vUGUtc[jsname=\"ubtiRe\"], #cwos",
+    "GoogleMath",
+    *__one_line,
+    lexbor_document);
 
 }
 
@@ -231,24 +230,11 @@ void MethodRemote::Google_Lyrics()
 {
 
   // I. New version of lyrics on many regions.
-  {
-    SELECTOR("div[data-lyricid] div[jsname=\"WbKHeb\"] > *");
-
-    METHOD("GoogleLyrics");
-    FIND(GoogleLyrics);
-    PRINT_RESPONSE();
-  }
-
-  // II. Version of lyrics on many other regions.
-  {
-    SELECTOR(".hwc > .BNeawe.tAd8D.AP7Wnd > div > .BNeawe.tAd8D.AP7Wnd");
-
-    METHOD("GoogleLyrics");
-    FIND(multi_lines);
-    PRINT_RESPONSE();
-  }
-
-  // NOTE: No idea why Google has two different versions. Don't @ me.
+  extract_info(
+    "div[data-lyricid] div[jsname=\"WbKHeb\"] > *",
+    "GoogleLyrics",
+    *__GoogleLyrics,
+    lexbor_document);
 
 }
 
@@ -261,12 +247,11 @@ void MethodRemote::Google_Translation()
   // 4. To word.
   // 5. From pronunciation.
   // 6. To pronunciation.
-  SELECTOR(".source-language, .target-language, #tw-source-text-ta, #tw-target-text, #tw-source-rmn, #tw-target-rmn");
-
-  METHOD("GoogleTranslation");
-  FIND(GoogleTranslation);
-
-  PRINT_RESPONSE();
+  extract_info(
+    ".source-language, .target-language, #tw-source-text-ta, #tw-target-text, #tw-source-rmn, #tw-target-rmn",
+    "GoogleTranslation",
+    *__GoogleTranslation,
+    lexbor_document);
 
 }
 
@@ -279,12 +264,11 @@ void MethodRemote::Google_UnitConversion()
   // 4. From value.
   // 5. To value.
   // 6. Formula.
-  SELECTOR(".rYVYn.LNn04b option[selected], #ssSucf option[selected], #NotFQb option[selected], #HG5Seb input, #NotFQb input, .bjhkR");
-
-  METHOD("GoogleUnitConversion");
-  FIND(GoogleUnitConversion);
-
-  PRINT_RESPONSE();
+  extract_info(
+    ".rYVYn.LNn04b option[selected], #ssSucf option[selected], #NotFQb option[selected], #HG5Seb input, #NotFQb input, .bjhkR",
+    "GoogleUnitConversion",
+    *__GoogleUnitConversion,
+    lexbor_document);
 
 }
 
@@ -292,12 +276,11 @@ void MethodRemote::Google_UnitConversion()
 void MethodRemote::Google_InformationHeader()
 {
 
-  SELECTOR(".g div[role=\"heading\"] > div > div, .obcontainer .card-section *");
-
-  METHOD("GoogleInformationHeader");
-  FIND(one_line);
-
-  PRINT_RESPONSE();
+  extract_info(
+    ".g div[role=\"heading\"] > div > div",
+    "GoogleInformationHeader",
+    *__one_line,
+    lexbor_document);
 
 }
 
@@ -305,12 +288,11 @@ void MethodRemote::Google_InformationHeader()
 void MethodRemote::Google_Correction()
 {
 
-  SELECTOR("#fprs > *:nth-child(-n+2)");
-
-  METHOD("GoogleCorrection");
-  FIND(one_line);
-
-  PRINT_RESPONSE();
+  extract_info(
+    "#fprs > *:nth-child(-n+2)",
+    "GoogleCorrection",
+    *__one_line,
+    lexbor_document);
 
 }
 

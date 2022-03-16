@@ -107,7 +107,7 @@ std::string &
 colour_method( std::string & method ) {
 
   if (is_atty)
-    method = "\033[32;1m" + method + "\033[0m";
+    method = "\033[98;3m" + method + "\033[0m";
 
   return method;
 
@@ -117,8 +117,51 @@ std::string &
 colour_type( std::string & type ) {
 
   if (is_atty)
-    type = "\033[92;1m" + type + "\033[0m";
+    type = "\033[90;3m" + type + "\033[0m";
 
   return type;
+
+}
+
+void MethodRemote::extract_info ( std::string target,
+                    std::string id,
+                    lxb_status_t (*in)(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *),
+                    lxb_html_document_t * document )
+{
+
+  // 1. To define the main (most-left forward) ID of the scraper.
+  context_t data;
+  data.method = id;
+  data.i = 0;
+  data.method = colour_method(data.method);
+
+  // 2. To create a copy of the current parser already defined by the main selector.
+  lxb_css_parser_t *copy_parser = lxb_css_parser_create();
+  lxb_css_parser_init(copy_parser, NULL, NULL);
+
+  // 3. 
+  lxb_selectors_t *copy_selectors = lxb_selectors_create();
+  lxb_selectors_init(copy_selectors);
+
+  // 4. Most memory rampage will occur here since all HTML information of the document will be guarded here.
+  //    For Google, this is a major problem since they pass-in JSON decrypted information for the client side to handle.
+  lxb_dom_node_t *copy_body = lxb_dom_interface_node(lxb_html_document_body_element(document));
+
+  // 5. 
+  lxb_css_selector_list_t *list = lxb_css_selectors_parse(copy_parser, (const lxb_char_t *) target.c_str(), target.length());
+  lxb_status_t status = lxb_selectors_find(copy_selectors, copy_body, list, in, &data);
+
+  // 6. Clear off all of the selectors usage.
+  lxb_css_selector_list_destroy_memory(list);
+
+  // 7. 
+  if (!data.response.empty()) {
+
+    // A. Just print out the result once.
+    std::cout << data.response;
+
+    // B. To avoid double definition of the status of responses.
+    if (!response_found) response_found = true;
+  }
 
 }

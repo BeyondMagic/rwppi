@@ -125,8 +125,7 @@ colour_type( std::string & type ) {
 
 void MethodRemote::extract_info ( std::string target,
                     std::string id,
-                    lxb_status_t (*in)(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *),
-                    lxb_html_document_t * document )
+                    lxb_status_t (*in)(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *))
 {
 
   // 1. To define the main (most-left forward) ID of the scraper.
@@ -145,7 +144,7 @@ void MethodRemote::extract_info ( std::string target,
 
   // 4. Most memory rampage will occur here since all HTML information of the document will be guarded here.
   //    For Google, this is a major problem since they pass-in JSON decrypted information for the client side to handle.
-  lxb_dom_node_t *copy_body = lxb_dom_interface_node(lxb_html_document_body_element(document));
+  lxb_dom_node_t *copy_body = lxb_dom_interface_node(lxb_html_document_body_element(lexbor_document));
 
   // 5. 
   lxb_css_selector_list_t *list = lxb_css_selectors_parse(copy_parser, (const lxb_char_t *) target.c_str(), target.length());

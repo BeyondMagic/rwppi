@@ -209,8 +209,7 @@ void MethodRemote::Google_LyricsInfo()
   extract_info(
     ".kp-hc h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb",
     "GoogleLyricsInformation",
-    *__GoogleLyricsInformation,
-    lexbor_document);
+    *__GoogleLyricsInformation);
 
 }
 
@@ -221,8 +220,7 @@ void MethodRemote::Google_Math()
   extract_info(
     ".vUGUtc[jsname=\"ubtiRe\"], #cwos",
     "GoogleMath",
-    *__one_line,
-    lexbor_document);
+    *__one_line);
 
 }
 
@@ -233,8 +231,7 @@ void MethodRemote::Google_Lyrics()
   extract_info(
     "div[data-lyricid] div[jsname=\"WbKHeb\"] > *",
     "GoogleLyrics",
-    *__GoogleLyrics,
-    lexbor_document);
+    *__GoogleLyrics);
 
 }
 
@@ -250,8 +247,7 @@ void MethodRemote::Google_Translation()
   extract_info(
     ".source-language, .target-language, #tw-source-text-ta, #tw-target-text, #tw-source-rmn, #tw-target-rmn",
     "GoogleTranslation",
-    *__GoogleTranslation,
-    lexbor_document);
+    *__GoogleTranslation);
 
 }
 
@@ -267,8 +263,7 @@ void MethodRemote::Google_UnitConversion()
   extract_info(
     ".rYVYn.LNn04b option[selected], #ssSucf option[selected], #NotFQb option[selected], #HG5Seb input, #NotFQb input, .bjhkR",
     "GoogleUnitConversion",
-    *__GoogleUnitConversion,
-    lexbor_document);
+    *__GoogleUnitConversion);
 
 }
 
@@ -279,8 +274,7 @@ void MethodRemote::Google_InformationHeader()
   extract_info(
     ".g div[role=\"heading\"] > div > div",
     "GoogleInformationHeader",
-    *__one_line,
-    lexbor_document);
+    *__one_line);
 
 }
 
@@ -291,8 +285,7 @@ void MethodRemote::Google_Correction()
   extract_info(
     "#fprs > *:nth-child(-n+2)",
     "GoogleCorrection",
-    *__one_line,
-    lexbor_document);
+    *__one_line);
 
 }
 

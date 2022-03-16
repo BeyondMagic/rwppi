@@ -57,8 +57,7 @@ class MethodRemote
 
     void
     extract_info(std::string, std::string,
-                 lxb_status_t (*)(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *),
-                 lxb_html_document_t *);
+                 lxb_status_t (*)(lxb_dom_node_t *, lxb_css_selector_specificity_t *, void *));
 
     void
     Google_All();

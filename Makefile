@@ -6,12 +6,15 @@ endif
 
 #---------------------------------------------
 
-all: build
+all: modules build
 
 #----------------------------------------------
 
-methods:
+tinyexpr:
 	mkdir -p bin
+	gcc   -c ./source/modules/Methods/tinyexpr/main.c             -o bin/tinyexpr.o
+
+methods:
 	g++   -c ./source/modules/Methods/Methods.cpp                 -o bin/methods.o
 
 arguments:
@@ -23,10 +26,7 @@ url:
 assistant:
 	g++   -c ./source/modules/AssistantFun/AssistantFun.cpp       -o bin/assistant.o
 
-tinyexpr:
-	gcc   -c ./source/modules/Methods/tinyexpr/main.c             -o bin/tinyexpr.o
-
-modules: methods arguments url assistant tinyexpr
+modules: tinyexpr methods arguments url assistant
 
 #-----------------------------------------------
 

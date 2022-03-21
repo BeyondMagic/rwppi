@@ -77,6 +77,7 @@ PRINT_FUNCTION(GoogleLyricsInformation)
 
   // 1. The order of information given by Google.
   {
+
     switch (my->i) {
       case 0: my->type = "Title";       break;
       case 1: my->type = "Singer";      break;
@@ -86,6 +87,7 @@ PRINT_FUNCTION(GoogleLyricsInformation)
     }
 
     my->type = colour_type(my->type);
+
   }
 
   // 2. Save the text content of the element.
@@ -202,12 +204,17 @@ PRINT_FUNCTION(GoogleUnitConversion)
 void MethodRemote::Google_LyricsInfo()
 {
 
-  // A. Title.
-  // B. Singer.
-  // C. Source.
-  // D. Songwriters & Studios.
+  // A. Title old version & new.
+  // B. Singer old version & new.
+  // C. Source old version & new.
+  // D. Songwriters & Studios old version & new.
+  // E. Album image showing.
   extract_info(
-    ".kp-hc h2[data-attrid=\"title\"], .kp-hc a, .j04ED, .xpdxpnd > .auw0zb",
+    ".kp-hc h2[data-attrid=\"title\"], div[data-attrid=\"title\"] > span[role=\"heading\"], \
+    .kp-hc a, div.wx62f[data-attrid=\"subtitle\"], \
+    .Oh5wg .j04ED, .Z1hOCe > div[data-lyricid] > div:not(:first-child), \
+    .xpdxpnd > .auw0zb, \
+    #tsuid21",
     "GoogleLyricsInformation",
     *__GoogleLyricsInformation);
 

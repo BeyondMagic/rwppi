@@ -117,7 +117,7 @@ class MethodRemote
     TableSport();
 
     void
-    InformationTable();
+    Google_InformationTable();
 
   private:
     lxb_dom_node_t      * lexbor_body;

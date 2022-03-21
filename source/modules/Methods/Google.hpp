@@ -296,6 +296,17 @@ void MethodRemote::Google_Correction()
 
 }
 
+void MethodRemote::Google_InformationTable()
+{
+
+  // A. One-liners of the table.
+  extract_info(
+    ".wp-ms.mnr-c div[data-attrid][style=\"clear:none\"]",
+    "GoogleInformationTable",
+    *__one_line);
+
+}
+
 void MethodRemote::Google_All()
 {
 
@@ -307,6 +318,7 @@ void MethodRemote::Google_All()
   auto translation_handler       = std::async(&MethodRemote::Google_Translation,       this);
   auto unitconversion_handler    = std::async(&MethodRemote::Google_UnitConversion,    this);
   auto informationheader_handler = std::async(&MethodRemote::Google_InformationHeader, this);
+  auto informationtable_handler  = std::async(&MethodRemote::Google_InformationTable,  this);
 
   // B. Local methods call-out.
   math_handler.get();
@@ -316,5 +328,6 @@ void MethodRemote::Google_All()
   translation_handler.get();
   unitconversion_handler.get();
   informationheader_handler.get();
+  informationtable_handler.get();
 
 }

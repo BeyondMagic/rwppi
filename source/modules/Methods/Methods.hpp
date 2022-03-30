@@ -163,3 +163,13 @@ extern lxb_status_t __multi_lines (lxb_dom_node_t *node, lxb_css_selector_specif
     std::cerr << message << std::endl; \
     exit(1);                           \
   }
+
+#define RETURN_DEFAULT_WALKER() \
+  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr); \
+  const std::string data = std::string( (char *) lxb_data ); \
+  if (!data.empty()) { \
+    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n'; \
+  } \
+  my->i++; \
+  my->type.clear(); \
+  return LXB_STATUS_OK;

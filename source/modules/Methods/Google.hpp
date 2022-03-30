@@ -90,19 +90,32 @@ PRINT_FUNCTION(GoogleLyricsInformation)
 
   }
 
-  // 2. Save the text content of the element.
-  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
-  const std::string data = std::string( (char *) lxb_data );
+  RETURN_DEFAULT_WALKER();
+}
 
-  // 3. ...
-  if (!data.empty()) {
-    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n';
+PRINT_FUNCTION(GoogleWeather)
+{
+  context_t *my = (context_t *) ctx;
+
+  // 1. The order of information given by Google.
+  {
+
+    switch (my->i) {
+      case 0: my->type = "Celsius";    break;
+      case 1: my->type = "Fahrenheit"; break;
+      case 2: my->type = "Location";   break;
+      case 3: my->type = "DayTime";    break;
+      case 4: my->type = "Climate";    break;
+      case 5: my->type = "Rain";       break;
+      case 6: my->type = "Humidity";   break;
+      case 7: my->type = "WindKM";     break;
+      case 8: my->type = "WindMPH";    break;
+    }
+
+    my->type = colour_type(my->type);
   }
 
-  my->i++;
-  my->type.clear();
-
-  return LXB_STATUS_OK;
+  RETURN_DEFAULT_WALKER();
 }
 
 PRINT_FUNCTION(GoogleTranslation)
@@ -123,19 +136,7 @@ PRINT_FUNCTION(GoogleTranslation)
     my->type = colour_type(my->type);
   }
 
-  // 2. Save the text content of the element.
-  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
-  const std::string data = std::string( (char *) lxb_data );
-
-  // 3. Print the text data of the element
-  if (!data.empty()) {
-    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n';
-  }
-
-  my->i++;
-  my->type.clear();
-
-  return LXB_STATUS_OK;
+  RETURN_DEFAULT_WALKER();
 }
 
 PRINT_FUNCTION(GoogleUnitConversion)
@@ -181,20 +182,7 @@ PRINT_FUNCTION(GoogleUnitConversion)
 
   }
 
-  // 3. Save the text content of the element.
-  const lxb_char_t * lxb_data = lxb_dom_node_text_content(node, nullptr);
-  std::string data = std::string( (char *) lxb_data );
-
-  // 4. Print the text data of the element
-  if (!data.empty()) {
-    my->response = my->response + my->method + ' ' + my->type + ' ' + data + '\n';
-  }
-
-  my->i++;
-
-  my->type.clear();
-
-  return LXB_STATUS_OK;
+  RETURN_DEFAULT_WALKER();
 }
 
 /*
@@ -210,11 +198,13 @@ void MethodRemote::Google_LyricsInfo()
   // D. Songwriters & Studios old version & new.
   // E. Album image showing.
   extract_info(
-    ".kp-hc h2[data-attrid=\"title\"], div[data-attrid=\"title\"] > span[role=\"heading\"], \
-    .kp-hc a, div.wx62f[data-attrid=\"subtitle\"], \
-    .Oh5wg .j04ED, .Z1hOCe > div[data-lyricid] > div:not(:first-child), \
-    .xpdxpnd > .auw0zb, \
-    #tsuid21",
+    ".kp-hc h2[data-attrid=\"title\"],"
+    "div[data-attrid=\"title\"] > span[role=\"heading\"],"
+    ".kp-hc a, div.wx62f[data-attrid=\"subtitle\"],"
+    ".Oh5wg .j04ED,"
+    ".Z1hOCe > div[data-lyricid] > div:not(:first-child),"
+    ".xpdxpnd > .auw0zb,"
+    "#tsuid21",
     "GoogleLyricsInformation",
     *__GoogleLyricsInformation);
 
@@ -252,7 +242,12 @@ void MethodRemote::Google_Translation()
   // 5. From pronunciation.
   // 6. To pronunciation.
   extract_info(
-    ".source-language, .target-language, #tw-source-text-ta, #tw-target-text, #tw-source-rmn, #tw-target-rmn",
+    ".source-language,"
+    ".target-language,"
+    "#tw-source-text-ta,"
+    "#tw-target-text,"
+    "#tw-source-rmn,"
+    "#tw-target-rmn",
     "GoogleTranslation",
     *__GoogleTranslation);
 
@@ -268,12 +263,16 @@ void MethodRemote::Google_UnitConversion()
   // 5. To value.
   // 6. Formula.
   extract_info(
-    ".rYVYn.LNn04b option[selected], #ssSucf option[selected], #NotFQb option[selected], #HG5Seb input, #NotFQb input, .bjhkR",
+    ".rYVYn.LNn04b option[selected],"
+    "#ssSucf option[selected],"
+    "#NotFQb option[selected],"
+    "#HG5Seb input,"
+    "#NotFQb input,"
+    ".bjhkR",
     "GoogleUnitConversion",
     *__GoogleUnitConversion);
 
 }
-
 
 void MethodRemote::Google_InformationHeader()
 {
@@ -284,7 +283,6 @@ void MethodRemote::Google_InformationHeader()
     *__one_line);
 
 }
-
 
 void MethodRemote::Google_Correction()
 {
@@ -307,6 +305,32 @@ void MethodRemote::Google_InformationTable()
 
 }
 
+void MethodRemote::Google_Weather()
+{
+
+  // 1. Celsius.
+  // 2. Fahrenheit.
+  // 3. Location.
+  // 4. Date.
+  // 5. Climate.
+  // 6. Rain, Humidyt, Wind
+  // 7. Image.
+
+  // A. One-liners of the table.
+  extract_info(
+    "#wob_wc #wob_tm.wob_t,"
+    "#wob_wc #wob_ttm.wob_t,"
+    "#wob_wc #wob_loc,"
+    "#wob_wc #wob_dts,"
+    "#wob_wc #wob_dc,"
+    "#wob_wc .wtsRwe > div:not(:last-child),"
+    "#wob_wc .wtsRwe #wob_ws,"
+    "#wob_wc .wtsRwe #wob_tws",
+    "GoogleWeather",
+    *__GoogleWeather);
+
+}
+
 void MethodRemote::Google_All()
 {
 
@@ -319,6 +343,7 @@ void MethodRemote::Google_All()
   auto unitconversion_handler    = std::async(&MethodRemote::Google_UnitConversion,    this);
   auto informationheader_handler = std::async(&MethodRemote::Google_InformationHeader, this);
   auto informationtable_handler  = std::async(&MethodRemote::Google_InformationTable,  this);
+  auto weather_handler           = std::async(&MethodRemote::Google_Weather,           this);
 
   // B. Local methods call-out.
   math_handler.get();
@@ -329,5 +354,6 @@ void MethodRemote::Google_All()
   unitconversion_handler.get();
   informationheader_handler.get();
   informationtable_handler.get();
+  weather_handler.get();
 
 }

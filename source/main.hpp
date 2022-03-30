@@ -159,35 +159,34 @@ struct Util {
     R"(Local will always run unless source is specified.
 
     Local:
-      0 -> Math -> 4+6/3+27+sqrt(25)
+      1 -> Math -> 4+6/3+27+sqrt(25)
 
   All remote methods will run by source specification, emphasis on all
   since it will scrape in a asynchronous manner for performance.
 
-    Google:
+    Google: https://www.google.com/
+       2 -> Math               -> log_2(26) + 7/3
+       3 -> Definition         -> meaning of love
+       4 -> Lyrics             -> K.Flay - Maybe There's A Way lyrics
+       5 -> LyricsInformation  -> K.Flay - Maybe There's A Way lyrics
+       6 -> Translation        -> palavra fazer em português para japonês
+       7 -> Weather            -> current weather
+       8 -> Tracklist          -> noisia outer edges tracklist
+       9 -> InformationList    -> social network cast
+      10 -> HeaderList         -> Need for Speed Heat cars list
+      11 -> Chemistry          -> density of hydrogen
+      12 -> Pronunciation      -> pronounce linux
+      13 -> UnitConversion     -> 1m into 1cm
+      14 -> CurrencyConversion -> 1 USD in rupee
+      15 -> InformationHeader  -> christmas day
+      16 -> InformationWindow  -> who is garfield
+      17 -> QuotesList         -> mahatma gandhi quotes
+      18 -> TableSport         -> Chelsea next game
+      19 -> InformationTable   -> the office
+      20 -> GoogleCorrection   -> lirics in the end
 
-       1 -> Math               -> log_2(26) + 7/3
-       2 -> Definition         -> meaning of love
-       3 -> Lyrics             -> K.Flay - Maybe There's A Way lyrics
-       4 -> LyricsInformation  -> K.Flay - Maybe There's A Way lyrics
-       5 -> Translation        -> palavra fazer em português para japonês
-       6 -> Weather            -> current weather
-       7 -> Tracklist          -> noisia outer edges tracklist
-       8 -> InformationList    -> social network cast
-       9 -> HeaderList         -> Need for Speed Heat cars list
-      10 -> Chemistry          -> density of hydrogen
-      11 -> Pronunciation      -> pronounce linux
-      12 -> UnitConversion     -> 1m into 1cm
-      13 -> CurrencyConversion -> 1 USD in rupee
-      14 -> InformationHeader  -> christmas day
-      15 -> InformationWindow  -> who is garfield
-      16 -> QuotesList         -> mahatma gandhi quotes
-      17 -> TableSport         -> Chelsea next game
-      18 -> InformationTable   -> the office
-      19 -> GoogleCorrection   -> lirics in the end
-
-    LetrasMusBr -> https://www.letras.mus.br/
-      19 -> Lyrics -> Grupo Revelação Tá Escrito)"
+    LetrasMusBr: https://www.letras.mus.br/
+      21 -> Lyrics -> Grupo Revelação Tá Escrito)"
     << std::endl;
 
     return 0;

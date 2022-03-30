@@ -37,11 +37,11 @@ int main( const int argc, char** argv )
     : "en_US";
   std::string  query;
   std::string  sources   = "0";
+  std::string  methods   = "0";
   bool         log       = false;
   bool         load_file = false;
   bool         save_file = false;
   bool         unit_two  = true; // In case we want to skip local methods.
-  std::string  methods   = "0";
   unsigned int unit      = 3;    // Default is all without log.
 
 
@@ -63,7 +63,7 @@ int main( const int argc, char** argv )
         if ( arguments.exists( "-t", "--to"      ) ) save_file = true;
         if ( arguments.exists( "-L", "--load"    ) ) load_file = true;
 
-        if ( isatty(STDIN_FILENO) and isatty(fileno(stdin)) )
+        if (isatty(0) and isatty(1) and isatty(2))
         {
           is_atty = true;
         }
@@ -227,28 +227,26 @@ int main( const int argc, char** argv )
    */
   else {
 
-    if (log) std::cout << "[4] Special unit." << std::endl;
+    std::cerr << "[4] This feature is not built yet. The logic behind it must be simplified." << std::endl;
+    return 1;
 
-    // Loop through each method
-    // method_string
-    // {
-    //    method_hash = unique_number_from_string(method_string)
-    //
-    //    switch (method_hash)
+    //if (log) std::cout << "[4] Special unit." << std::endl;
+
+    // for (;;) {
+
+    //    switch (method)
     //    {
-    //      case LOCAL_MATH:
+    //      case 1:
     //        Local local;
     //        break;
-    //
-    //      case GOOGLE_MATH:
+
+    //      case 2:
     //        Remote remote;
-    //
+
     //        break;
-    //
-    //      // Don't accept unknown methods.
+
     //      default:
-    //        std::cerr << "[4] EE: The method '" << method_string <<' hashed '" << method_hash << "' is unknown." << std::endl;
-    //
+    //        std::cerr << "[4] EE: The method '" << method << "' is unknown." << std::endl;
     //        return 1;
     //    }
     // }

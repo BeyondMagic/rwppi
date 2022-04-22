@@ -100,6 +100,11 @@ PRINT_FUNCTION(GoogleWeather)
   // 1. The order of information given by Google.
   {
 
+    const lxb_char_t name[] = "src";
+    const lxb_char_t * value;
+    std::string value_handler;
+    size_t value_len;
+
     switch (my->i) {
       case 0: my->type = "Celsius";    break;
       case 1: my->type = "Fahrenheit"; break;
@@ -110,9 +115,17 @@ PRINT_FUNCTION(GoogleWeather)
       case 6: my->type = "Humidity";   break;
       case 7: my->type = "WindKM";     break;
       case 8: my->type = "WindMPH";    break;
+      case 9: my->type = "Image";
+        value = lxb_dom_element_get_attribute(lxb_dom_interface_element(node), name, 3, &value_len);
+        value_handler = std::string( (char * ) value );
+        value_handler.erase(0,2);
+        break;
     }
 
     my->type = colour_type(my->type);
+
+    if (!value_handler.empty())
+      my->response = my->response + my->method + ' ' + my->type + ' ' + value_handler + '\n';
   }
 
   RETURN_DEFAULT_WALKER();
@@ -313,8 +326,10 @@ void MethodRemote::Google_Weather()
   // 3. Location.
   // 4. Date.
   // 5. Climate.
-  // 6. Rain, Humidyt, Wind
-  // 7. Image.
+  // 6. Rain, Humidyt.
+  // 7. Wind (KM).
+  // 8. Wind (MPH).
+  // 9. Image.
 
   // A. One-liners of the table.
   extract_info(
@@ -325,7 +340,8 @@ void MethodRemote::Google_Weather()
     "#wob_wc #wob_dc,"
     "#wob_wc .wtsRwe > div:not(:last-child),"
     "#wob_wc .wtsRwe #wob_ws,"
-    "#wob_wc .wtsRwe #wob_tws",
+    "#wob_wc .wtsRwe #wob_tws,"
+    "#wob_wc #wob_tci",
     "GoogleWeather",
     *__GoogleWeather);
 

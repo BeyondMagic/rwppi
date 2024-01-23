@@ -1,4 +1,3 @@
-gcm.cache
 
 # CCLS cache for intellisense and language server support.
 /**/.ccls-cache

@@ -63,7 +63,8 @@ int main( const int argc, char** argv )
         if ( arguments.exists( "-t", "--to"      ) ) save_file = true;
         if ( arguments.exists( "-L", "--load"    ) ) load_file = true;
 
-        if (isatty(0) and isatty(1) and isatty(2))
+        if (isatty(0) and isatty(1) and isatty(2)
+            )
         {
           is_atty = true;
         }
@@ -112,8 +113,6 @@ int main( const int argc, char** argv )
         std::cout << "[1] Log set:                    " << log       << '\n';
         std::cout << "[1] Sources set:                " << sources   << '\n';
         std::cout << "[1] Method set:                 " << methods   << '\n';
-        std::cout << "[1] Your query is exactly:      " << query     << '\n';
-        std::cout << "[1] Is on ATTY (Terminal):      " << is_atty   << '\n';
         std::cout << "[1] Save file:                  " << save_file << '\n';
         std::cout << "[1] Load file:                  " << load_file << '\n';
       }

@@ -1,3 +1,5 @@
+# Library folder for all libraries of the project.
+/library/
 
 # CCLS cache for intellisense and language server support.
 /**/.ccls-cache

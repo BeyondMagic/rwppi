@@ -1,5 +1,11 @@
-.ccls-cache
 gcm.cache
-bin
+
+# CCLS cache for intellisense and language server support.
+/**/.ccls-cache
+
+# Binaries folder.
+/bin/
+
+# For HTML test files.
 HTML
 *.html

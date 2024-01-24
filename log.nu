@@ -10,32 +10,6 @@
 const NAME_DEFAULT = "log.nu"
 const FORMAT_DEFAULT = "%s"
 
-export-env {
-	# Reference for colours:
-	#	https://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
-	$env.colours = {
-		# Reverse.
-		reverse: (tput rev)
-		# Turn off all attributes.
-		reset: (tput sgr0)
-		# Bold character.
-		bold: (tput bold)
-		# Background color
-		bg: {
-			white: (tput setab 7)
-		}
-		# Foreground colour.
-		fg: {
-			dim: (tput dim)
-			black: (tput setaf 0)
-			red: (tput setaf 1)
-			green: (tput setaf 2)
-			yellow: (tput setaf 3)
-			white: (tput setaf 7)
-		}
-	}
-}
-
 # Printf parser.
 def fprint [
 	...args: any     # Strings/number to print.
@@ -44,6 +18,13 @@ def fprint [
 	--colour: string # Colour of the whole message.
 	--left: int = 0  # Extra padding.
 ] -> null {
+
+	# Reverse video (foreground and background) characters.
+	let t_reverse = (tput rev)
+	# Turn off all attributes.
+	let t_reset = (tput sgr0)
+	# Bold character.
+	let t_bold = (tput bold)
 
 	let final_name = '[' + $name + ']'
 
@@ -67,9 +48,9 @@ def fprint [
 	# Parse separately adding double-quote to all arguments so that printf parse it correctly.
 	] | append ([
 		$final_format
-		($colour + $env.colours.bold + $env.colours.reverse + $final_name + $env.colours.reset + $colour)
+		($colour + $t_bold + $t_reverse + $final_name + $t_reset + $colour)
 		...$args
-		($env.colours.reset)
+		($t_reset)
 	] | each {|arg|
 		'"' + $arg + '"'
 	})
@@ -84,7 +65,8 @@ export def fail [
 	--name: string = $NAME_DEFAULT,     # Name of the program.
 	--format: string = $FORMAT_DEFAULT, # Format (printf specification) of the message.
 ] -> null {
-	fprint --left 4 --name $name --format ('[X] ' + $format) --colour $env.colours.fg.red ...$message
+	let t_fg_red = (tput setaf 1)
+	fprint --left 4 --name $name --format ('[X] ' + $format) --colour $t_fg_red ...$message
 }
 
 # Print a checked item in green (represents task was done successfuly).
@@ -93,7 +75,8 @@ export def success [
 	--name: string = $NAME_DEFAULT,     # Name of the program.
 	--format: string = $FORMAT_DEFAULT, # Format (printf specification) of the message.
 ] -> null {
-	fprint --left 4 --name $name --format ('[✓] ' + $format) --colour $env.colours.fg.green ...$message
+	let t_fg_green = (tput setaf 2)
+	fprint --left 4 --name $name --format ('[✓] ' + $format) --colour $t_fg_green ...$message
 }
 
 # Print in red (represents information that needs to be paid).
@@ -102,7 +85,8 @@ export def error [
 	--name: string = $NAME_DEFAULT,     # Name of the program.
 	--format: string = $FORMAT_DEFAULT, # Format (printf specification) of the message.
 ] -> null {
-	fprint --name $name --format $format --colour $env.colours.fg.red ...$message
+	let t_fg_red = (tput setaf 1)
+	fprint --name $name --format $format --colour $t_fg_red ...$message
 }
 
 # Print in yellow (represents information to be paid attention).
@@ -111,7 +95,8 @@ export def warning [
 	--name: string = $NAME_DEFAULT,     # Name of the program.
 	--format: string = $FORMAT_DEFAULT, # Format (printf specification) of the message.
 ] -> null {
-	fprint --name $name --format $format --colour $env.colours.fg.yellow ...$message
+	let t_fg_yellow = (tput setaf 3)
+	fprint --name $name --format $format --colour $t_fg_yellow ...$message
 }
 
 # Print in gray (represents extra information).
@@ -120,5 +105,7 @@ export def debug [
 	--name: string = $NAME_DEFAULT,     # Name of the program.
 	--format: string = $FORMAT_DEFAULT, # Format (printf specification) of the message.
 ] -> null {
-	fprint --name $name --format $format --colour $env.colours.fg.white ...$message
+	let t_fg_white = (tput setaf 7)
+
+	fprint --name $name --format $format --colour $t_fg_white ...$message
 }

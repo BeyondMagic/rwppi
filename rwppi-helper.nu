@@ -255,9 +255,17 @@ export def build [
 
 	mkdir ($output | path dirname)
 
+	log debug --name $name "Compiling the program!"
+
 	let result = (nu -c ($command | str join (char space)) | complete)
 
-	if ($eyes) or ($result.exit_code != 0) {
+	if $eyes {
 		print $command
+	}
+
+	if $result.exit_code != 0 {
+		log fail --name $name "Failed at compiling!"
+	} else {
+		log success --name $name "Compiled successfully!"
 	}
 }

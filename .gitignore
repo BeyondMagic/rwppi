@@ -7,6 +7,5 @@
 # Binaries folder.
 /binary/
 
-# For HTML test files.
-HTML
-*.html
+# For test files and data.
+/tests/data/

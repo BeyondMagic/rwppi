@@ -259,11 +259,11 @@ export def build [
 
 	log debug --name $name "Compiling the program!"
 
-	let result = (nu -c ($command | str join (char space)) | complete)
-
 	if $eyes {
 		print $command
 	}
+
+	let result = (nu -c ($command | str join (char space)) | complete)
 
 	if $result.exit_code != 0 {
 		log fail --name $name "Failed at compiling!"

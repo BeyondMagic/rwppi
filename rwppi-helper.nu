@@ -176,9 +176,6 @@ export def libraries [
 		} else {
 			log success --name $name $"Put file\(s\)/folder\(s\) the library '($item.name)'."
 		}
-
-		# Return to the $library folder.
-		cd -
 	}
 	null
 }

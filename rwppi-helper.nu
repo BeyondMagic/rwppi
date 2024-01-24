@@ -168,7 +168,7 @@ export def libraries [
 			($object_out | path expand)
 		]
 
-		$result = (cp -f $item.object $object_out)
+		$result = (cp -f $item.object $object_out | complete)
 		if $result.exit_code != 0 {
 			log fail --name $name $"Could not place the file\(s\)/folder\(s\) of the library '($item.name)' in the expected place."
 			log warning --name $name $'Skipping the library ($item.name).'

@@ -271,3 +271,10 @@ export def build [
 		log success --name $name "Compiled successfully!"
 	}
 }
+
+# Run the binary
+export def main [
+	executable : string = $binary, # Path to executable
+] -> int {
+	nu -c $executable
+}

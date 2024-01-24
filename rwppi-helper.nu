@@ -274,7 +274,25 @@ export def build [
 
 # Run the binary
 export def main [
-	executable : string = $binary, # Path to executable
+	...args: string,                 # Arguments to launch rwppi.
+	--executable : string = $binary, # Path to executable
+	--eyes = false,                  # See command to launch.
 ] -> int {
-	nu -c $executable
+	let command = [
+		$executable
+		...$args
+	]
+
+	if $eyes {
+		print $command
+	}
+
+	log debug --name $name "Running the executable!"
+	nu -c ($command | str join (char space))
+
+	if $env.LAST_EXIT_CODE != 0 {
+		log fail --name $name "Failed at running!"
+	} else {
+		log success --name $name "Run successfully!"
+	}
 }

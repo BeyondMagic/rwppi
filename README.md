@@ -1,17 +1,21 @@
-<p align="center"><b>Iris is an online eater and feeder.</b></p>
+<p align="center"><b>rwppi is an online eater and feeder.</b></p>
 
 **Note:**
-
-Iris will take far longer than what I anticipated, the first working version will be released under 1.0.0 tag.
-
 ---
 
+This is a complete rewrite of the original iris; we improve ourselves, then we improve code, and again and again.
+
+<!--
 # Progress
 
 The speed is mostly limited to your internet connection and how fast cURL can give back the information. On my machine and with my Internet speed, this can take from **608ms** to up **1203ms**. **16ms-25ms** is the time used to scrape the given information.
+-->
 
-Iris take a different approach to [tuxi] and [oi] as it will display any information that it can scrape. It leaves up to the user to do something with the information that is given to them, that's why each "method" will display its name before the information, as you can see below:
+<!--
+rwppi take a different approach to [tuxi] and [oi] as it will display any information that it can scrape. It leaves up to the user to do something with the information that is given to them, that's why each "method" will display its name before the information, as you can see below:
+-->
 
+<!--
 ```
 $ iris "Luna's Future lyrics"
 GoogleLyrics I see a cold wind blowing through
@@ -67,15 +71,16 @@ Now the future is a cold nightmare
 
 The releases binaries can be get up [here](https://github.com/iris-cli/iris/releases).
 
-If you want, however, build it to test yourself, you can. See [Makefile](/Makefile).
+If you want, however, build it to test yourself, you can. Using my helper written in [Nushell](https://www.nushell.sh/) called [`rwppi-helper`](./rwppi-helper.nu), it is very easy!
 
-**Note:** I do not recommend you installing a single binary on your system or building just once the source code, because how information is displayed can often change, and for that often updates are necessary.
+**Note:** I do not recommend you, however, installing a single binary on your system or building just once the source code, because how information is displayed in web pages can often change, and for that often updates are necessary.
 
+-->
 ---
 
 # Acknowledgements:
 
-+ [tinyexpr](https://github.com/codeplea/tinyexpr/) -- Minimal expression evaluation engine as library.
+<!-- + [tinyexpr](https://github.com/codeplea/tinyexpr/) -- Minimal expression evaluation engine as library. -->
 + [lexbor](https://github.com/lexbor/lexbor) -- Fast and powerful way to parse HTML.
 + [cURL](https://curl.se/) -- Minimal way to download a source page as library.
 + [tuxi](https://github.com/Bugswriter/tuxi/) -- Inspired by.
@@ -83,4 +88,4 @@ If you want, however, build it to test yourself, you can. See [Makefile](/Makefi
 
 ---
 
-<p align="center"><a href="https://github.com/iris-cli/iris/blob/master/LICENSE">APACHE 2.0 LICENSE<a></p>
+<p align="center"><a href="https://github.com/iris-cli/iris/blob/rwppi/LICENSE">GNU AGPLV3<a></p>

@@ -8,7 +8,9 @@
 # João Farias © 2022-2024 BeyonadMagic <beyondmagic@mail.ru>
 
 const library = './library/'
+const binary = './binary/rwppi'
 const name = 'rwppi-helper'
+const source_code = './source/main.c++'
 use ./log.nu
 
 # Build/update all libraries.
@@ -183,11 +185,11 @@ export def libraries [
 
 # Build source code.
 export def build [
-	--output : string = './binary/rwppi',   # Binary output.
-	--input : string = './source/main.c++', # Source main input.
-	--eyes = false,                         # Print the command of build.
-	--optimise = false,                     # Optimise (O3).
-	--debug = true,                         # Add debug flags.
+	--output : string = $binary,     # Binary output.
+	--input : string = $source_code, # Source main input.
+	--eyes = false,                  # Print the command of build.
+	--optimise = false,              # Optimise (O3).
+	--debug = true,                  # Add debug flags.
 ] -> any {
 	mut args = [
 		# Latest standard of C++, however we'll set at C++23 upon module support in GCC.

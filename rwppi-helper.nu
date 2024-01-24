@@ -270,6 +270,16 @@ export def build [
 	} else {
 		log success --name $name "Compiled successfully!"
 	}
+
+	let compilation_database = [
+		{
+			arguments: $command
+			directory: ('./source/' | path expand)
+			file: ($source_code | path expand)
+		}
+	]
+
+	$compilation_database | save --force compile_commands.json
 }
 
 # Run the binary

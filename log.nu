@@ -1,6 +1,9 @@
 #!/usr/bin/env nu
 #
 # Module for logging things with a kinda cute way.
+# Reference for terminfo (colours, reverse, etc):
+#	https://www.mankier.com/5/terminfo#Description-Predefined_Capabilities
+#	https://linux.101hacks.com/ps1-examples/prompt-color-using-tput/
 #
 # João Farias © 2022-2024 BeyonadMagic <beyondmagic@mail.ru>
 
